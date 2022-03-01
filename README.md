@@ -10,6 +10,10 @@ Studenten kunnen deze branche eventueel als startcode gebruiken. Deze branch bev
   - Opdracht2Start: De startcode die beoordeeld moet worden  
   - Opdracht2Uitwerking: De voorbeelduitwerking. 
 
-- Opdracht 3: Inrichten ontwikkelomgeving. Dit is een tussendooropdracht. Studenten maken een database
+- Opdracht 3: Inrichten ontwikkelomgeving. Dit is een tussendooropdracht die ervoor zorgt dat de studenten voor het vervolg over alle templates e.d. beschikken die nodig zijn voor het maken van de opdrachten.
+  - Voor Visio worden templates voor een class diagram, een use case diagram en een ERD diagram klaargezte
+  - In msWord wordt een template voor een datamodelbeschrijving klaargezet
+
+
 
 
