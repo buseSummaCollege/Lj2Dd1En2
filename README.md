@@ -27,32 +27,44 @@ Van belang is dat de studenten weten wat een databaseprogramma is en dat ze ook 
   - use cases maken
   - maken van een genormaliseerd datamodellen voor de applicatie, bestaande uit een beschrijving en ERD
  - databases
-   - een database maken
-   - database tabellen maken
-   - relaties tussen tabellen maken
-   - SQL toepassen: SELECT, INSERT, UPDATE en DELETE
-   - SQL joins toepassen: INNER JOIN
+   - een database maken, inclusief tabellen met kolommen, indexen en relaties tussen de tabellen
+   - SQL toepassen: SELECT, INSERT, UPDATE en DELETE. Daarnaast ook INNER JOIN
 - programmeren
-  - Database class
-    - connection strings uit een configuratiefile gebruiken (niet langer hard coded in programma opnemen)
-    - foutafhandeling via een result parameter
-    - database gegevens in een model class object zetten, rekening houdend met type conversie, inclusief NULL values 
-    - database gegevens uit een model class object naar de database schrijven, rekening houdend met type conversie
-    - optimalisatie  
-  - Model classes 
-    - encapsulation
-    - properties 
-    - implementatie van afleidbare gegevens
-  - Binding
-    - Properties
-    - ObservableCollection
-    - INotifyPropertyChanged
+  - Database class: connection strings, foutafhandeling, dataconversie (database types - c# types)
+  - Model classes : properties, afleidbare gegevens (zoals leeftijd)
+  - Binding       : properties, ObservableCollection, INotifyPropertyChanged
 
 ### Opdracht 3: Inrichten ontwikkelomgeving
 Dit is een tussendooropdracht die ervoor zorgt dat de studenten voor het vervolg over alle templates e.d. beschikken die nodig zijn voor het maken van de opdrachten. 
   - Voor Visio worden templates voor een class diagram, een use case diagram en een ERD diagram klaargezte
   - In msWord wordt een template voor een datamodelbeschrijving klaargezet
 
+***Branch***:
+- Opdracht03Ontwikkelomgeving   
+  - losPolloshermanos.sql      Script voor een MySql database (leeg)
+  - wpf applicatie             
+  - folder Documentatie met daarin de templates voor Visio (ERD, Use Case, Class Diagram) en msWord (Datamodel)
 
+
+### Opdracht 4: Userstory RestaurantDisplay
+In deze opdracht gaat de student een eenvoudige use case en datamodel maken. Veel wordt voorgedaan. Het gaat erom dat de student meedoet, zodat hij dit bij een volgende opdracht zelf kan doen. Student moet zo snel mogelijk aan de slag met programmeren. Belangrijkste is de structuur van de databaseclass de domain class en binding. In deze opdracht wordt veel voorgedaan (gezamenlijk programmeren) en getoets of eenieder bij is en het begrijpt.
+
+***Branch***:
+- Opdracht04.1.UseCase      Bevat bijgewerkte Use Case   
+- Opdracht04.2.Datamodel    Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database
+- Opdracht04.3.WpfDatabase  Bevat WPF applicatie met uitgewerkte database class
+- Opdtacht04.4.WpfDisPlay   Bevat WPF applicatie met data gebind aan de XAML
+
+
+### Opdracht 5: Userstory IngrediëntenInzicht
+In deze opdracht gaat de student geheel zelfstandig een eenvoudige use case en datamodel maken. De bestaande documentatie wordt uitgebreid. Daarnaast wordt ook het programma uitgebreid. De gebruiker zal afhankelijk van zijn rol een keuze moeten maken tussen het Display en het Ingredientenoverzicht. De student moet begrijpen dat dit niet automatisch betekent dat hij een inlogscherm of iets dergelijk gaat maken, maar dat hij de mogelijkheden met de productowner bespreekt en hem een keuze laat maken. In dit geval zal de productowner kiezen voor een eenvoudig keuzescherm, waarbij procedureel wordt geregeld dat actors alleen die functies gebruiken die zij nodig hebben. 
+
+
+***Branch***:
+- Opdracht05.1.UseCase          Bevat bijgewerkte Use Case   
+- Opdracht05.2.Datamodel        Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database
+- Opdracht05.3.WpfDatabase      Bevat WPF applicatie met uitgewerkte database class
+- Opdtacht05.4.WpfKeuzescherm   Bevat WPF applicatie om een keuze te maken tussen het Display of ingredientenwindow
+- Opdtacht05.4.WpfIngredienten  Bevat WPF applicatie met data gebind aan de XAML
 
 
