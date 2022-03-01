@@ -1,43 +1,43 @@
 # Lj2Dd1En2
 ## Introductie
-Deze repository bevat alle code die gebruikt wordt in de vakken DD1 en DD2 van leerjaar 2 Software Development.
+Deze repository bevat alle programmacode en documentatie die gebruikt en gemaakt worden voor de vakken DD1 en DD2 van leerjaar 2 Software Development.
 
-De code is in een aantal branches ondergebracht. Deze branches komen overeen met de opdrachten uit de reader.
+De code en documentatie is in een aantal branches ondergebracht. Deze branches komen overeen met de opdrachten uit de reader.
 
 ### Opdracht1: Heractiveren kennis Leerjaar 1. 
-Studenten gaan zelfstandig aan de slag met een CRUD applicatie, op basis van de kennis die ze nog hebben. Na de vakantie zal deze kennis vaak weggezakt zijn. Laat studenten in groepen werken en hun opdracht aftekenen. Laat ze an de hand van deze opdracht hun persoonlijke leerdoelen noteren.
+Studenten gaan zelfstandig aan de slag met een CRUD applicatie, op basis van de kennis die ze nog hebben. Na de vakantie zal deze kennis vaak weggezakt zijn.  
 
-|***Branch***||
-|:---|---|
-|Opdracht01Cars|Script voor een MySql database (carsdb.sql)|
-||Startcode voor de te maken WPF applicatie. Wijs studenten erop dat het hier om een .**Net Core** applicatie gaat. |
+|***Branch***   ||
+|:---           |---|
+|Opdracht01Cars |Script voor een MySql database (carsdb.sql)|
+|               |Startcode voor de te maken WPF applicatie. Wijs studenten erop dat het hier om een .**Net Core** applicatie gaat. |
 
 
 ### Opdracht2: Oefenen met kwaliteitstandaarden.
-Studenten verbeteren het programma, zodat het voldoet aan de kwaliteitseisen. Het gaat hierbij om de regels waarmee de studenten in leerjaar 1 kennis hebben gemaakt, zoals het toepassen van logische namen, gebruik van hood- en kleine letters, toepassen van een database class, juiste types toepassen, duidelijke instructies bij fouten, etc. Ook deze regels moeten ze weer activeren. Belang van de regels moet benadrukt worden. 
+Studenten verbeteren het programma, zodat het voldoet aan de kwaliteitseisen. Het gaat hierbij om de regels waarmee de studenten in leerjaar 1 kennis hebben gemaakt, zoals het toepassen van logische namen, gebruik van hoofd- en kleine letters, toepassen van een database class, juiste types toepassen, duidelijke instructies bij fouten, commentaar etc. Ook deze regels moeten weer geactiveerd worden. 
 
-|***Branch***||
-|:---|---|
-|Opdracht02Start|Bevat de code die de studenten moeten beoordelen en verbeteren|
-|Opdracht02Uitwerking|De voorbeelduitwerking|
+|***Branch***         ||
+|:---                 |---|
+|Opdracht02Start      |Bevat de code die de studenten moeten beoordelen en verbeteren|
+|Opdracht02Uitwerking |De voorbeelduitwerking|
 
 ## Los Pollos Hermanos
-Na deze eerste 2 opdrachten gaan de studenten aan de slag met een opdracht voor restaurant Los Pollos Hermanos. Doel is dat de studenten volgens Scrum een applicatie maken. Belangrijk is dus dat ze niet eerst een compleet ontwerp en programma maken, maar dit ontwerp en programma laten ontstaan volgens de volgorde waarin de product owner user stories heeft gemaakt. Alle user stories staan in een KanBan in deze opdracht. 
+Na deze eerste 2 opdrachten gaan de studenten aan de slag met een opdracht voor restaurant Los Pollos Hermanos. Doel is dat de studenten volgens een Scrum aanpak een applicatie maken. Belangrijk is dus dat ze niet eerst een compleet ontwerp en programma maken, maar dit ontwerp en programma laten ontstaan volgens de volgorde waarin de product owner, user story's in de product backlog heeft gezet. Deze user story's staan in een KanBan in deze repository. 
 
-Van belang is dat de studenten weten wat een databaseprogramma is en dat ze ook al eens een databaseclass hebben gemaakt. Studenten leren het volgende:
-- documentatie
-  - use cases maken
-  - maken van een genormaliseerd datamodellen voor de applicatie, bestaande uit een beschrijving en ERD
- - databases
-   - een database maken, inclusief tabellen met kolommen, indexen en relaties tussen de tabellen
-   - SQL toepassen: SELECT, INSERT, UPDATE en DELETE. Daarnaast ook INNER JOIN
-- programmeren
-  - Database class: connection strings, foutafhandeling, dataconversie (database types - c# types)
-  - Model classes : properties, afleidbare gegevens (zoals leeftijd)
-  - Binding       : properties, ObservableCollection, INotifyPropertyChanged
+Studenten leren het volgende:
+- Documentatie (ontwerpen)
+  - Maken van een use cases diagram.
+  - Maken van een genormaliseerd datamodellen voor de applicatie, bestaande uit een beschrijving en ERD.
+ - Databases
+   - Een database maken, inclusief tabellen met kolommen, indexen en relaties tussen de tabellen.
+   - SQL toepassen: SELECT (inclusief INNER JOIN), INSERT, UPDATE en DELETE.
+- Programmeren
+  - Database class: connection strings, foutafhandeling, dataconversie (database types - c# types).
+  - Model classes : properties, afleidbare gegevens (zoals leeftijd).
+  - Binding       : properties, ObservableCollection, INotifyPropertyChanged.
 
 ### Opdracht 3: Inrichten ontwikkelomgeving
-Dit is een tussendooropdracht die ervoor zorgt dat de studenten voor het vervolg over alle templates e.d. beschikken die nodig zijn voor het maken van de opdrachten. 
+Dit is een opdracht die ervoor zorgt dat de studenten over alle templates e.d. beschikken die nodig zijn voor het maken van de de vervolgopdrachten. 
   - Voor Visio worden templates voor een class diagram, een use case diagram en een ERD diagram klaargezte
   - In msWord wordt een template voor een datamodelbeschrijving klaargezet
 
@@ -49,7 +49,7 @@ Dit is een tussendooropdracht die ervoor zorgt dat de studenten voor het vervolg
 
 
 ### Opdracht 4: Userstory RestaurantDisplay
-In deze opdracht gaat de student een eenvoudige use case en datamodel maken. Veel wordt voorgedaan. Het gaat erom dat de student meedoet, zodat hij dit bij een volgende opdracht zelf kan doen. Student moet zo snel mogelijk aan de slag met programmeren. Belangrijkste is de structuur van de databaseclass de domain class en binding. In deze opdracht wordt veel voorgedaan (gezamenlijk programmeren) en getoets of eenieder bij is en het begrijpt.
+In deze opdracht gaat de student een eenvoudige use case en een datamodel maken. Veel wordt voorgedaan. Het gaat erom dat de student meedoet, zodat hij dit bij een volgende opdracht zelf kan doen. Student moet zo snel mogelijk aan de slag met programmeren. Belangrijkste is de _databaseclass_, de _domain class_ en _binding_. In deze opdracht wordt veel voorgedaan (gezamenlijk programmeren). Studenten zorgen dat ze alles begrijpen, bij blijven en hun persoonlijke leerdoelen noteren.
 
 |***Branch***||
 |:---|---|
