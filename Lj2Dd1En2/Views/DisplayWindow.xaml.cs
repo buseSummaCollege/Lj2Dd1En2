@@ -61,5 +61,11 @@ namespace Lj2Dd1En2.Views
                 MessageBox.Show(dbResult + serviceDeskBericht);
             }
         }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            new KeuzeWindow().Show();
+        }
     }
 }
