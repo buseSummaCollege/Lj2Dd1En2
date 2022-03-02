@@ -97,7 +97,7 @@ In deze opdracht gaat de student geheel zelfstandig een eenvoudige use case en d
 ### Opdracht 7: Userstory IngredientEenheden|
 Doel van deze opdracht i|s te oefenen met relaties en met de SQL innerjoin. De eenheden worden aan het datamodel toegevoegd. Wat betekent dit voor de database class. Ook hier zal weer veel gezamenlij|k geprogrammeerd worden. |||
 
-||***Branch***||
+|***Branch***||
 |:---|---|
 | Opdracht07.1.Datamodel        |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database|
 | Opdracht07.2.WpfDatabase      |Bevat WPF applicatie met uitgewerkte database class: Unit toegevoegd, Ingredient aangepast|
