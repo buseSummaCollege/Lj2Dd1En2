@@ -95,7 +95,7 @@ In deze opdracht gaat de student geheel zelfstandig een eenvoudige use case en d
 | Opdracht06.5.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML|
 
 ### Opdracht 7: Userstory IngredientEenheden
-Doel van deze opdracht is te oefenen met relaties en met de SQL innerjoin. De eenheden worden aan het datamodel toegevoegd. Wat betekent dit voor de database class. Ook hier zal weer veel gezamenlij|k geprogrammeerd worden.
+Doel van deze opdracht is te oefenen met relaties en met de SQL innerjoin. De eenheden worden aan het datamodel toegevoegd. Wat betekent dit voor de database class. Ook hier zal weer veel gezamenlijk geprogrammeerd worden.
 
 |***Branch***||
 |:---|---|
