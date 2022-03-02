@@ -53,9 +53,12 @@ Dit is een opdracht die ervoor zorgt dat de studenten over alle templates e.d. b
 
 |***Branch***||
 |:---|---|
-|Opdracht03Ontwikkelomgeving|Script voor een lege MySql database (losPolloshermanos.sql)|
-||wpf applicatie|
-||folder Documentatie met daarin de templates voor Visio (ERD, Use Case, Class Diagram) en msWord (Datamodel)|
+|Opdracht03Ontwikkelomgeving|Visio|
+||Databaseprogramma voor MySql, bijvoorbeeld XAMPP|
+||VisualStudio 2022|
+||Folder met naam Documentatie. Hierin worden de Visio (ERD, Use Case, Class Diagram) en MsWord (Datamodel) templates gezet.|
+||Script voor een lege MySql database (losPolloshermanos.sql)|
+||Lege WPF Core applicatie met de naam Lj2Dd1En2.|
 
 
 ### Opdracht 4: Userstory RestaurantDisplay
