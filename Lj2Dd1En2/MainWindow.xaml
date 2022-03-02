@@ -7,6 +7,86 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
+            <Grid Grid.Column="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Autos" 
+                       Grid.Row="0"
+                       FontSize="20" FontWeight="Black" TextAlignment="Center"/>
+                <ListBox x:Name="LbAutos"  Grid.Row="1" 
+                         DisplayMemberPath="make"
+                         SelectionChanged="LbAutos_SelectionChanged" 
+                         SelectedValuePath="carId"
+                         />
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="2, 0, 0, 2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Background="AliceBlue">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="SelectedAuto" 
+                               FontSize="20" FontWeight="Black" TextAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Merk"/>
+                    <TextBox   Grid.Row="1" Grid.Column="1" x:Name="tbauto" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Afbeelding"/>
+                    <Image     Grid.Row="2" Grid.Column="1" x:Name="imgAfbeelding1"/>
+                    <Button    Grid.Row="3" Grid.Column="1" Content="afbeelding..."  Click="BtnAfbeelding1_Click" />
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Jaar"/>
+                    <TextBox   Grid.Row="4" Grid.Column="1" x:Name="TbJaar" />
+                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                        <Button Content="Update" Click="ok1_Click" Margin="5"/>
+                        <Button Content="Delete" Click="nok_Click" Margin="5"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1" Background="MintCream">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="NewAuto" 
+                               FontSize="20" FontWeight="Black" TextAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Merk"/>
+                    <TextBox   Grid.Row="1" Grid.Column="1" x:Name="TbMerk2" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Afbeelding"/>
+                    <Image     Grid.Row="2" Grid.Column="1" x:Name="imgAfbeelding2"/>
+                    <Button    Grid.Row="3" Grid.Column="1" Content="afbeelding..."  Click="BtnAfbeelding2_Click" />
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Jaar"/>
+                    <TextBox   Grid.Row="4" Grid.Column="1" x:Name="TbJaar1" />
+                    <Button    Grid.Row="5" Grid.Column="1" Content="Create" Margin="5" Click="bewaar_Click" />
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
