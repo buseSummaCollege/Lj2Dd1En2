@@ -1,0 +1,31 @@
+﻿<Window x:Class="Lj2Dd1En2.Views.IngredientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lj2Dd1En2.Views"
+        mc:Ignorable="d"
+     Title="Ingredienten Window" Height="450" Width="300">
+    <Grid Margin="20">
+        <ListView ItemsSource="{Binding Ingredients}" SelectedItem="{Binding SelectedIngredient}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="200" Margin="5">
+                        <DockPanel>
+                            <TextBlock Text="Naam:" Margin="2"/>
+                            <TextBlock Text="{Binding Name}" Margin="2"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBlock Text="Prijs:" Margin="2"/>
+                            <TextBlock Text="{Binding Price, StringFormat='€ 0.00'}" Margin="2"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBlock Text="Eenheid:" Margin="2"/>
+                            <TextBlock Text="{Binding Unit}" Margin="2"/>
+                        </DockPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>

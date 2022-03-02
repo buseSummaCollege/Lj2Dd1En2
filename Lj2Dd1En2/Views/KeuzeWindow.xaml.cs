@@ -32,8 +32,8 @@ namespace Lj2Dd1En2.Views
 
         private void BtnIngredientenWindow_Click(object sender, RoutedEventArgs e)
         {
-            //new IngredientWindow().Show();
-            //this.Close();
+            new IngredientWindow().Show();
+            this.Close();
         }
     }
 }
