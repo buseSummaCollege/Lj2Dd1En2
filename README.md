@@ -24,6 +24,11 @@ Studenten verbeteren het programma, zodat het voldoet aan de kwaliteitseisen. He
 |Opdracht02Start      |Bevat de code die de studenten moeten beoordelen en verbeteren|
 |Opdracht02Uitwerking |De voorbeelduitwerking|
 
+**Opmerkingen:**
+- De code maakt gebruik van een MySql database (NuGet package MySql.Data). 
+- De startcode werkt; studenten hoeven hier dus geen fouten uit te halen omdat de code het niet zou doen. Studenten verbeteren code uitsluitend op basis van de gestelde kwaliteitseisen. Deze verbeteringen vinden zowel plaats in de XAML als in de .cs code.
+
+
 ## Los Pollos Hermanos
 Na deze eerste 2 opdrachten gaan de studenten aan de slag met een opdracht voor restaurant Los Pollos Hermanos. Doel is dat de studenten volgens een Scrum aanpak een applicatie maken. Belangrijk is dus dat ze niet eerst een compleet ontwerp en programma maken, maar dit ontwerp en programma laten ontstaan volgens de volgorde waarin de product owner, user story's in de product backlog heeft gezet. Deze user story's staan in een KanBan in deze repository. 
 
