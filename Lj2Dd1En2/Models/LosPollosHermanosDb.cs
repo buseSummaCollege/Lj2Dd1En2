@@ -17,6 +17,7 @@ namespace Lj2Dd1En2.Models
 
         private readonly string connString = ConfigurationManager.ConnectionStrings["Lj2Dd1En2Conn"].ConnectionString;
 
+        #region Meals
         // GetMeals leest alle rijen in uit de databasetabel Meals en voegt deze toe aan een ICollection. 
         // Als de ICollection bij aanroep null is, volgt er een ArgumentException
         // De waarde van GetMeals:
@@ -70,5 +71,61 @@ namespace Lj2Dd1En2.Models
             }
             return methodResult;
         }
+        #endregion
+
+        #region Ingredients
+        // GetIngredients leest alle rijen in uit de databasetabel Ingredients en voegt deze toe aan een ICollection. 
+        // Als de ICollection bij aanroep null is, volgt er een ArgumentException
+        // De waarde van GetIngredients:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding, als er wel fouten waten (mogelijk zijn niet alle maaltijden ingelezen)
+        public string GetIngredients(ICollection<Ingredient> ingredients)
+        {
+            if (ingredients == null)
+            {
+                throw new ArgumentException("Ongeldig argument bij gebruik van GetIngredients");
+            }
+
+            string methodResult = UNKNOWN;
+
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                        SELECT i.ingredientId, i.name, i.price, i.unit
+                        FROM ingredients i
+                        ORDER BY i.name
+                    ";
+                    MySqlDataReader reader = sql.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Ingredient ingredient = new ()
+                        {
+                            IngredientId = (int)reader["ingredientId"],
+                            Name = (string)reader["name"],  
+                            Price = (decimal)reader["price"],
+                            Unit = (string)reader["unit"]
+                        };
+
+                        ingredients.Add(ingredient);
+                    }
+                    methodResult = OK;
+
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(GetIngredients));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+        #endregion
     }
 }
