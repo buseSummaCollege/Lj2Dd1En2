@@ -9,9 +9,12 @@ Studenten gaan zelfstandig aan de slag met een CRUD applicatie, op basis van de 
 
 |***Branch***   ||
 |:---           |---|
-|Opdracht01Cars |Script voor een MySql database (carsdb.sql)|
+|Opdracht01Cars |Script voor een MySql database (carsdb.sql). |
 |               |Startcode voor de te maken WPF applicatie. Wijs studenten erop dat het hier om een .**Net Core** applicatie gaat. |
 
+**Opmerkingen:**
+- Het database script maakt ook de database aan met de naam carsdb. Levert dit problemen op, dan maakt de student zelf een database met deze naam. Uit het script wordt dan alleen het aanmaken van de tabellen en indexen overgenomen.
+- De startcode voor de WPF applicatie bevat de XAML lay-out. De .cs code is gedeeltelijk gegeven (lege event handlers, en code om een afbeelding in te lezen) 
 
 ### Opdracht2: Oefenen met kwaliteitstandaarden.
 Studenten verbeteren het programma, zodat het voldoet aan de kwaliteitseisen. Het gaat hierbij om de regels waarmee de studenten in leerjaar 1 kennis hebben gemaakt, zoals het toepassen van logische namen, gebruik van hoofd- en kleine letters, toepassen van een database class, juiste types toepassen, duidelijke instructies bij fouten, commentaar etc. Ook deze regels moeten weer geactiveerd worden. 
