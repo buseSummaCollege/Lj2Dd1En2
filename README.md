@@ -26,7 +26,9 @@ Studenten verbeteren het programma, zodat het voldoet aan de kwaliteitseisen. He
 
 **Opmerkingen:**
 - De code maakt gebruik van een MySql database (NuGet package MySql.Data). 
-- De startcode werkt; studenten hoeven hier dus geen fouten uit te halen omdat de code het niet zou doen. Studenten verbeteren code uitsluitend op basis van de gestelde kwaliteitseisen. Deze verbeteringen vinden zowel plaats in de XAML als in de .cs code.
+- De startcode werkt. Studenten hoeven hier dus geen fouten uit te halen omdat de code het niet zou doen. Studenten verbeteren code uitsluitend op basis van de gestelde kwaliteitseisen. Deze verbeteringen vinden zowel plaats in de XAML als in de .cs code. 
+- Er treden om diverse redenen exceptions plaats. Bijvoorbeeld als gegevens niet goed door de gebruiker zijn ingevuld. De student zal deze met het oog op de kwaliteit wel moeten aanpassen.
+- Het refreshen gebeurt door het MainWindow te sluiten en opnieuw te starten. Deze aanpak zie ik vaak bij studenten; hij geeft een onrustig beeld wat ze anders moeten gaan oplossen.
 
 
 ## Los Pollos Hermanos
