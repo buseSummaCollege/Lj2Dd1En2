@@ -60,46 +60,56 @@ Dit is een opdracht die ervoor zorgt dat de studenten over alle templates e.d. b
 ||Script voor een lege MySql database (losPolloshermanos.sql)|
 ||Lege WPF Core applicatie met de naam Lj2Dd1En2.|
 
+### Opdracht 4: Maken Configbestand
+Met deze opdracht leert de student een config bestand te maken voor de connectionstring van een database.
 
-### Opdracht 4: Userstory RestaurantDisplay
+|***Branch***||
+|:---|---|
+|Opdracht04Configbestand|Config bestand wordt toegevoegd|
+||Databaseclass voor een MySql database die gebruik maakt van het ConfigBestand|
+
+**Opmerking:**
+- Het Config bestand moet de student zelf toevoegen. Is dat niet het geval, dan werkt hij niet met de core versie van WPF. Hij zal dan een nieuwe WPF programma moeten maken (oude kan weg, is nog niks aan gedaan) 
+
+### Opdracht 5: Userstory RestaurantDisplay
 In deze opdracht gaat de student een eenvoudige use case en een datamodel maken. Veel wordt voorgedaan. Het gaat erom dat de student meedoet, zodat hij dit bij een volgende opdracht zelf kan doen. Student moet zo snel mogelijk aan de slag met programmeren. Belangrijkste is de _databaseclass_, de _domain class_ en _binding_. In deze opdracht wordt veel voorgedaan (gezamenlijk programmeren). Studenten zorgen dat ze alles begrijpen, bij blijven en hun persoonlijke leerdoelen noteren.
 
 |***Branch***||
 |:---|---|
-|Opdracht04.1.UseCase     |Bevat bijgewerkte Use Case |
-|Opdracht04.2.Datamodel   |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database |
-|Opdracht04.3.WpfDatabase |Bevat WPF applicatie met uitgewerkte database class |
-|Opdtacht04.4.WpfDisPlay  |Bevat WPF applicatie met data gebind aan de XAML |
+|Opdracht05.1.UseCase     |Bevat bijgewerkte Use Case |
+|Opdracht05.2.Datamodel   |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database |
+|Opdracht05.3.WpfDatabase |Bevat WPF applicatie met uitgewerkte database class |
+|Opdtacht05.4.WpfDisPlay  |Bevat WPF applicatie met data gebind aan de XAML |
 
 
-### Opdracht 5: Userstory IngrediëntenInzicht
+### Opdracht 6: Userstory IngrediëntenInzicht
 In deze opdracht gaat de student geheel zelfstandig een eenvoudige use case en datamodel maken. De bestaande documentatie wordt uitgebreid. Daarnaast wordt ook het programma uitgebreid. De gebruiker zal afhankelijk van zijn rol een keuze moeten maken tussen het Display en het Ingredientenoverzicht. De student moet begrijpen dat dit niet automatisch betekent dat hij een inlogscherm of iets dergelijk gaat maken, maar dat hij de mogelijkheden met de productowner bespreekt en hem een keuze laat maken. In dit geval zal de productowner kiezen voor een eenvoudig keuzescherm, waarbij procedureel wordt geregeld dat actors alleen die functies gebruiken die zij nodig hebben. 
 
 
 |***Branch***||
 |:---|---|
-| Opdracht05.1.UseCase          |Bevat bijgewerkte Use Case   |
-| Opdracht05.2.Datamodel        |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database|
-| Opdracht05.3.WpfDatabase      |Bevat WPF applicatie met uitgewerkte database class: Ingredient toegevoegd|
-| Opdtacht05.4.WpfKeuzescherm   |Bevat WPF applicatie om een keuze te maken tussen het Display of ingredientenwindow|
-| Opdtacht05.4.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML|
+| Opdracht06.1.UseCase          |Bevat bijgewerkte Use Case   |
+| Opdracht06.2.Datamodel        |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database|
+| Opdracht06.3.WpfDatabase      |Bevat WPF applicatie met uitgewerkte database class: Ingredient toegevoegd|
+| Opdtacht06.4.WpfKeuzescherm   |Bevat WPF applicatie om een keuze te maken tussen het Display of ingredientenwindow|
+| Opdtacht06.4.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML|
 
-### Opdracht 6: Userstory IngredientEenheden|
+### Opdracht 7: Userstory IngredientEenheden|
 Doel van deze opdracht i|s te oefenen met relaties en met de SQL innerjoin. De eenheden worden aan het datamodel toegevoegd. Wat betekent dit voor de database class. Ook hier zal weer veel gezamenlij|k geprogrammeerd worden. |||
 
 ||***Branch***||
 |:---|---|
-| Opdracht06.1.Datamodel        |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database|
-| Opdracht06.2.WpfDatabase      |Bevat WPF applicatie met uitgewerkte database class: Unit toegevoegd, Ingredient aangepast|
-| Opdtacht06.3.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML: aangepast|
+| Opdracht07.1.Datamodel        |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database|
+| Opdracht07.2.WpfDatabase      |Bevat WPF applicatie met uitgewerkte database class: Unit toegevoegd, Ingredient aangepast|
+| Opdtacht07.3.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML: aangepast|
 
-### Opdracht 7: Userstory MenuIngredienten
+### Opdracht 8: Userstory MenuIngredienten
 In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. Het model wordt samen gemaakt, maar daarna gaan de studenten zelf de rest uitwerken
 
 |***Branch***||
 |:---|---|
-| Opdracht07.1.UseCase              |Bevat de bijgewerkte use case|
-| Opdracht07.2.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
-| Opdracht07.2.WpfDatabase          |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
-| Opdtacht07.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
+| Opdracht08.1.UseCase              |Bevat de bijgewerkte use case|
+| Opdracht08.2.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
+| Opdracht08.2.WpfDatabase          |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
+| Opdtacht08.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
 
