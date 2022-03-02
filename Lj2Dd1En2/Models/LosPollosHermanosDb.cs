@@ -9,8 +9,12 @@ using System.Configuration;
 
 namespace Lj2Dd1En2.Models
 {
+
     public class LosPollosHermanosDb
     {
+        public static readonly string UNKNOWN = "Unknown";
+        public static readonly string OK = "Ok";
+
         private readonly string connString = ConfigurationManager.ConnectionStrings["Lj2Dd1En2Conn"].ConnectionString;
 
         // GetMeals leest alle rijen in uit de databasetabel Meals en voegt deze toe aan een ICollection. 
@@ -25,19 +29,19 @@ namespace Lj2Dd1En2.Models
                 throw new ArgumentException("Ongeldig argument bij gebruik van GetMeals");
             }
 
-            string methodResult = "unknown";
+            string methodResult = UNKNOWN;
 
 
-            using (MySqlConnection conn = new (connString))
+            using (MySqlConnection conn = new(connString))
             {
                 try
                 {
                     conn.Open();
                     MySqlCommand sql = conn.CreateCommand();
                     sql.CommandText = @"
-                    SELECT m.mealId, m.name, m.description, m.price
-                    FROM meals m
-                    ";
+            SELECT m.mealId, m.name, m.description, m.price
+            FROM meals m
+            ";
                     MySqlDataReader reader = sql.ExecuteReader();
 
                     while (reader.Read())
@@ -46,14 +50,16 @@ namespace Lj2Dd1En2.Models
                         {
                             MealId = (int)reader["mealId"],
                             Name = (string)reader["name"],
-                            Description = (string)reader["description"],
+                            Description = reader["description"] == DBNull.Value
+                                            ? null
+                                            : (string)reader["description"],
                             Price = (decimal)reader["price"],
                         };
 
                         meals.Add(meal);
                     }
+                    methodResult = OK;
 
-                    methodResult = "ok";
                 }
                 catch (Exception e)
                 {

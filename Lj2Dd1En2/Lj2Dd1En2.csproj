@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\pizzeria_14.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\pizzeria_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.28" />
   </ItemGroup>
 
