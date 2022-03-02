@@ -79,7 +79,7 @@ In deze opdracht gaat de student een eenvoudige use case en een datamodel maken.
 |Opdracht05.1.UseCase     |Bevat bijgewerkte Use Case |
 |Opdracht05.2.Datamodel   |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database |
 |Opdracht05.3.WpfDatabase |Bevat WPF applicatie met uitgewerkte database class |
-|Opdtacht05.4.WpfDisPlay  |Bevat WPF applicatie met data gebind aan de XAML |
+|Opdracht05.4.WpfDisPlay  |Bevat WPF applicatie met data gebind aan de XAML |
 
 
 ### Opdracht 6: Userstory IngrediëntenInzicht
@@ -91,8 +91,8 @@ In deze opdracht gaat de student geheel zelfstandig een eenvoudige use case en d
 | Opdracht06.1.UseCase          |Bevat bijgewerkte Use Case   |
 | Opdracht06.2.Datamodel        |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database|
 | Opdracht06.3.WpfDatabase      |Bevat WPF applicatie met uitgewerkte database class: Ingredient toegevoegd|
-| Opdtacht06.4.WpfKeuzescherm   |Bevat WPF applicatie om een keuze te maken tussen het Display of ingredientenwindow|
-| Opdtacht06.4.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML|
+| Opdracht06.4.WpfKeuzescherm   |Bevat WPF applicatie om een keuze te maken tussen het Display of ingredientenwindow|
+| Opdracht06.4.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML|
 
 ### Opdracht 7: Userstory IngredientEenheden|
 Doel van deze opdracht i|s te oefenen met relaties en met de SQL innerjoin. De eenheden worden aan het datamodel toegevoegd. Wat betekent dit voor de database class. Ook hier zal weer veel gezamenlij|k geprogrammeerd worden. |||
@@ -101,7 +101,7 @@ Doel van deze opdracht i|s te oefenen met relaties en met de SQL innerjoin. De e
 |:---|---|
 | Opdracht07.1.Datamodel        |Bevat bijgewerkte Datamodel, ERD en SQL Script voor de database|
 | Opdracht07.2.WpfDatabase      |Bevat WPF applicatie met uitgewerkte database class: Unit toegevoegd, Ingredient aangepast|
-| Opdtacht07.3.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML: aangepast|
+| Opdracht07.3.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML: aangepast|
 
 ### Opdracht 8: Userstory MenuIngredienten
 In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. Het model wordt samen gemaakt, maar daarna gaan de studenten zelf de rest uitwerken
@@ -111,5 +111,5 @@ In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. He
 | Opdracht08.1.UseCase              |Bevat de bijgewerkte use case|
 | Opdracht08.2.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
 | Opdracht08.2.WpfDatabase          |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
-| Opdtacht08.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
+| Opdracht08.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
 
