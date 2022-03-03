@@ -119,8 +119,7 @@ Tenslotte wordt het DisplayWindow aangepast, zodat de beschrijving en prijs van 
 
 |***Branch***||
 |:---|---|
-| Opdracht09.1.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
-| Opdracht09.2.WpfDisplayWindow     |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
+| Opdracht09.1.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd. Daarnaast is de databaseclass aangepast en zijn Description en Price van de Meal class afleidbare gegevens. |
 
 ### Opdracht 10: Userstory MaaltijdIngredienten
 In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. Het model wordt samen gemaakt, maar daarna gaan de studenten zelf de rest uitwerken
