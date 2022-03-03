@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 02 mrt 2022 om 18:23
+-- Gegenereerd op: 03 mrt 2022 om 08:00
 -- Serverversie: 10.4.22-MariaDB
 -- PHP-versie: 8.1.1
 
@@ -33,32 +33,32 @@ CREATE TABLE `ingredients` (
   `ingredientId` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `price` decimal(18,2) NOT NULL,
-  `unit` varchar(50) NOT NULL
+  `unitId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `ingredients`
 --
 
-INSERT INTO `ingredients` (`ingredientId`, `name`, `price`, `unit`) VALUES
-(1, 'Rundvlees burger', '3.23', 'Stuks'),
-(2, 'Sla', '0.12', 'Blaadjes'),
-(3, 'cheddar smeltkaas', '0.35', 'plakken'),
-(4, 'verse uitjes', '0.15', 'portie'),
-(5, 'augurk', '0.13', 'schijfjes'),
-(6, 'Big Mac saus', '0.30', 'portie'),
-(7, '3-delig sesambroodje', '0.50', 'Suks'),
-(8, 'ketchup', '0.20', 'Portie'),
-(9, 'getoast sesambroodje', '0.45', 'Stuks'),
-(10, 'geroosterd sesambroodje', '0.45', 'Stuks'),
-(11, 'Mosterd', '0.25', 'Kuipje'),
-(12, 'ragout', '4.20', '300 gram'),
-(13, 'kipfilet', '4.15', 'Stuks'),
-(14, 'sandwichsaus', '0.18', 'Portie'),
-(15, 'crunchy bacon', '0.28', '120 gram'),
-(16, 'emmentaler smeltkaas', '0.45', 'schijf'),
-(17, 'grillsaus', '0.35', 'Portie'),
-(18, 'tomaat', '0.65', 'Schijfjes');
+INSERT INTO `ingredients` (`ingredientId`, `name`, `price`, `unitId`) VALUES
+(1, 'Rundvlees burger', '3.23', 8),
+(2, 'Sla', '0.12', 3),
+(3, 'cheddar smeltkaas', '0.35', 5),
+(4, 'verse uitjes', '0.15', 6),
+(5, 'augurk', '0.13', 7),
+(6, 'Big Mac saus', '0.30', 6),
+(7, '3-delig sesambroodje', '0.50', 9),
+(8, 'ketchup', '0.20', 6),
+(9, 'getoast sesambroodje', '0.45', 8),
+(10, 'geroosterd sesambroodje', '0.45', 8),
+(11, 'Mosterd', '0.25', 4),
+(12, 'ragout', '4.20', 2),
+(13, 'kipfilet', '4.15', 8),
+(14, 'sandwichsaus', '0.18', 6),
+(15, 'crunchy bacon', '0.28', 1),
+(16, 'emmentaler smeltkaas', '0.45', 7),
+(17, 'grillsaus', '0.35', 6),
+(18, 'tomaat', '0.65', 7);
 
 -- --------------------------------------------------------
 
@@ -84,6 +84,32 @@ INSERT INTO `meals` (`MealId`, `Name`, `Description`, `Price`) VALUES
 (4, 'El Sabroso Doble Grande', 'Twee grootse burgers van 100% rundvlees met crunchy bacon, emmentaler smeltkaas, juicy tomaat, verse uitjes en frisse sla. Met een speciale grillsaus op een geroosterd sesambroodje.', '9.35'),
 (5, 'Croqueta Hollanda', 'De echte oer-Hollandse burger. Knapperig vanbuiten en zacht van binnen. Met een vulling van ragout met stukjes puur rundvlees. Afgemaakt met een lekkere laag mosterd.', '6.25');
 
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `units`
+--
+
+CREATE TABLE `units` (
+  `unitId` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `units`
+--
+
+INSERT INTO `units` (`unitId`, `name`) VALUES
+(1, '120 gram'),
+(2, '300 gram'),
+(3, 'Blaadjes'),
+(4, 'Kuipje'),
+(5, 'Plakken'),
+(6, 'Portie'),
+(7, 'Schijfjes'),
+(8, 'Stuks'),
+(9, 'Suks');
+
 --
 -- Indexen voor geëxporteerde tabellen
 --
@@ -93,7 +119,8 @@ INSERT INTO `meals` (`MealId`, `Name`, `Description`, `Price`) VALUES
 --
 ALTER TABLE `ingredients`
   ADD PRIMARY KEY (`ingredientId`),
-  ADD UNIQUE KEY `name` (`name`);
+  ADD UNIQUE KEY `name` (`name`),
+  ADD KEY `FK_UNIT` (`unitId`);
 
 --
 -- Indexen voor tabel `meals`
@@ -101,6 +128,12 @@ ALTER TABLE `ingredients`
 ALTER TABLE `meals`
   ADD PRIMARY KEY (`MealId`),
   ADD UNIQUE KEY `Name` (`Name`);
+
+--
+-- Indexen voor tabel `units`
+--
+ALTER TABLE `units`
+  ADD PRIMARY KEY (`unitId`);
 
 --
 -- AUTO_INCREMENT voor geëxporteerde tabellen
@@ -117,6 +150,22 @@ ALTER TABLE `ingredients`
 --
 ALTER TABLE `meals`
   MODIFY `MealId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT voor een tabel `units`
+--
+ALTER TABLE `units`
+  MODIFY `unitId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- Beperkingen voor geëxporteerde tabellen
+--
+
+--
+-- Beperkingen voor tabel `ingredients`
+--
+ALTER TABLE `ingredients`
+  ADD CONSTRAINT `FK_UNIT` FOREIGN KEY (`unitId`) REFERENCES `units` (`unitId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
