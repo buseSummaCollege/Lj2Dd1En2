@@ -35,20 +35,17 @@ namespace Lj2Dd1En2.Models
             set { name = value; OnPropertyChanged(); }
         }
 
-        private string? description;
-
-        public string? Description
-        {
-            get { return description; }
-            set { description = value; OnPropertyChanged(); }
+        public string? Description {
+            get =>
+                MealIngredients == null || MealIngredients.Count == 0
+                ? null
+                : MealIngredients
+                    .Select(x => $"{x.Quantity} {x.Ingredient?.Unit?.Name} {x?.Ingredient?.Name}")
+                    .Aggregate((x, y) => $"{x}, {y}");
         }
 
-        private decimal price;
+        public ICollection<MealIngredient>? MealIngredients { get; set; }
 
-        public decimal Price
-        {
-            get { return price; }
-            set { price = value; OnPropertyChanged(); }
-        }
+        public decimal Price { get => MealIngredients == null ? 0 : MealIngredients.Sum(x => x.Amount); }
     }
 }

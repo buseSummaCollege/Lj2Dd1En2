@@ -43,9 +43,9 @@ namespace Lj2Dd1En2.Models
                     conn.Open();
                     MySqlCommand sql = conn.CreateCommand();
                     sql.CommandText = @"
-            SELECT m.mealId, m.name, m.description, m.price
-            FROM meals m
-            ";
+                        SELECT m.mealId, m.name
+                        FROM meals m
+                        ";
                     MySqlDataReader reader = sql.ExecuteReader();
 
                     while (reader.Read())
@@ -54,11 +54,9 @@ namespace Lj2Dd1En2.Models
                         {
                             MealId = (int)reader["mealId"],
                             Name = (string)reader["name"],
-                            Description = reader["description"] == DBNull.Value
-                                            ? null
-                                            : (string)reader["description"],
-                            Price = (decimal)reader["price"],
                         };
+                        meal.MealIngredients = new List<MealIngredient>();
+                        GetMealIngredientsByMeal(meal.MealId, meal.MealIngredients);
 
                         meals.Add(meal);
                     }
@@ -377,6 +375,77 @@ namespace Lj2Dd1En2.Models
                 catch (Exception e)
                 {
                     Console.Error.WriteLine(nameof(GetUnits));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+        #endregion
+
+        #region MealIngredient
+        // GetMealIngredientsByMeal leest alle rijen in uit de databasetabel MealIngredients en voegt deze toe aan
+        // een ICollection. Als de ICollection bij aanroep null is, volgt er een ArgumentException
+        // De waarde van GetMealIngredientsByMeal:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding, als er wel fouten waten (mogelijk zijn niet alle maaltijden ingelezen)
+        public string GetMealIngredientsByMeal(int mealId, ICollection<MealIngredient> mealIngredients)
+        {
+            if (mealIngredients == null)
+            {
+                throw new ArgumentException("Ongeldig argument bij gebruik van GetMealIngredientsByMeal");
+            }
+
+            string methodResult = UNKNOWN;
+
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                            SELECT mi.mealIngredientId, mi.mealId, mi.ingredientId, mi.quantity, 
+                                   i.name, i.price, i.unitId, 
+                                   u.name as 'UnitName'
+                            FROM mealingredients mi
+                            INNER JOIN ingredients i ON i.ingredientId = mi.mealIngredientId
+                            INNER JOIN units u ON u.unitId = i.unitId
+                            WHERE mi.mealId = @mealId
+                        ";
+                    sql.Parameters.AddWithValue("@mealId", mealId);
+                    MySqlDataReader reader = sql.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        MealIngredient mealIngredient = new ()
+                        {
+                            MealIngredientId = (int)reader["mealIngredientId"],
+                            MealId = (int)reader["mealId"],
+                            IngredientId = (int)reader["ingredientId"],
+                            Quantity = (uint)reader["quantity"],
+                            Ingredient = new()
+                            {
+                                IngredientId = (int)reader["ingredientId"],
+                                Name = (string)reader["name"],  
+                                Price = (decimal)reader["price"],
+                                UnitId = (int)reader["unitId"],
+                                Unit = new()
+                                {
+                                    UnitId = (int)reader["unitId"],
+                                    Name = (string)reader["UnitName"]
+                                }
+                            }
+                        };
+                        mealIngredients.Add(mealIngredient);
+                    }
+                    methodResult = OK;
+
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(GetMealIngredientsByMeal));
                     Console.Error.WriteLine(e.Message);
                     methodResult = e.Message;
                 }

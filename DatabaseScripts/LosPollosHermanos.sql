@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 03 mrt 2022 om 08:00
+-- Gegenereerd op: 03 mrt 2022 om 21:04
 -- Serverversie: 10.4.22-MariaDB
 -- PHP-versie: 8.1.1
 
@@ -63,26 +63,47 @@ INSERT INTO `ingredients` (`ingredientId`, `name`, `price`, `unitId`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tabelstructuur voor tabel `mealingredients`
+--
+
+CREATE TABLE `mealingredients` (
+  `mealIngredientId` int(11) NOT NULL,
+  `mealId` int(11) NOT NULL,
+  `ingredientId` int(11) NOT NULL,
+  `quantity` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `mealingredients`
+--
+
+INSERT INTO `mealingredients` (`mealIngredientId`, `mealId`, `ingredientId`, `quantity`) VALUES
+(1, 1, 1, 2),
+(2, 2, 1, 1),
+(3, 1, 9, 1),
+(4, 2, 10, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Tabelstructuur voor tabel `meals`
 --
 
 CREATE TABLE `meals` (
   `MealId` int(11) NOT NULL,
-  `Name` varchar(50) NOT NULL,
-  `Description` text DEFAULT NULL,
-  `Price` decimal(18,2) NOT NULL
+  `Name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `meals`
 --
 
-INSERT INTO `meals` (`MealId`, `Name`, `Description`, `Price`) VALUES
-(1, 'Los Dos', '2 Burgers van 100% rundvlees met verse sla, cheddar smeltkaas, verse uitjes en fijne slices van augurk. Met legendarische Big Mac saus op een 3-delig sesambroodje.', '7.10'),
-(2, 'El Grande', 'Een royale burger van 100% rundvlees, cheddar smeltkaas, verse uitjes en fijne augurk slices. Afgemaakt met een lekker laagje ketchup en mosterd op een getoast sesambroodje.', '8.25'),
-(3, 'El Pollo Picanto', 'De enige echte kipburger. Een burger van malse kipfilet, omhuld met een krokant laagje. Daarbovenop verse sla en een frisse sandwichsaus op een getoast sesambroodje.', '7.95'),
-(4, 'El Sabroso Doble Grande', 'Twee grootse burgers van 100% rundvlees met crunchy bacon, emmentaler smeltkaas, juicy tomaat, verse uitjes en frisse sla. Met een speciale grillsaus op een geroosterd sesambroodje.', '9.35'),
-(5, 'Croqueta Hollanda', 'De echte oer-Hollandse burger. Knapperig vanbuiten en zacht van binnen. Met een vulling van ragout met stukjes puur rundvlees. Afgemaakt met een lekkere laag mosterd.', '6.25');
+INSERT INTO `meals` (`MealId`, `Name`) VALUES
+(5, 'Croqueta Hollanda'),
+(2, 'El Grande'),
+(3, 'El Pollo Picanto'),
+(4, 'El Sabroso Doble Grande'),
+(1, 'Los Dos');
 
 -- --------------------------------------------------------
 
@@ -123,6 +144,14 @@ ALTER TABLE `ingredients`
   ADD KEY `FK_UNIT` (`unitId`);
 
 --
+-- Indexen voor tabel `mealingredients`
+--
+ALTER TABLE `mealingredients`
+  ADD PRIMARY KEY (`mealIngredientId`),
+  ADD UNIQUE KEY `mealId` (`mealId`,`ingredientId`),
+  ADD KEY `FK_INGREDIENT` (`ingredientId`);
+
+--
 -- Indexen voor tabel `meals`
 --
 ALTER TABLE `meals`
@@ -143,7 +172,13 @@ ALTER TABLE `units`
 -- AUTO_INCREMENT voor een tabel `ingredients`
 --
 ALTER TABLE `ingredients`
-  MODIFY `ingredientId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `ingredientId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT voor een tabel `mealingredients`
+--
+ALTER TABLE `mealingredients`
+  MODIFY `mealIngredientId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT voor een tabel `meals`
@@ -155,7 +190,7 @@ ALTER TABLE `meals`
 -- AUTO_INCREMENT voor een tabel `units`
 --
 ALTER TABLE `units`
-  MODIFY `unitId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `unitId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Beperkingen voor geëxporteerde tabellen
@@ -166,6 +201,13 @@ ALTER TABLE `units`
 --
 ALTER TABLE `ingredients`
   ADD CONSTRAINT `FK_UNIT` FOREIGN KEY (`unitId`) REFERENCES `units` (`unitId`);
+
+--
+-- Beperkingen voor tabel `mealingredients`
+--
+ALTER TABLE `mealingredients`
+  ADD CONSTRAINT `FK_INGREDIENT` FOREIGN KEY (`ingredientId`) REFERENCES `ingredients` (`ingredientId`),
+  ADD CONSTRAINT `FK_MAALTIJD` FOREIGN KEY (`mealId`) REFERENCES `meals` (`MealId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
