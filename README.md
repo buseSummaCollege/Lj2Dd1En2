@@ -113,13 +113,29 @@ De manager moet ook ingredienten kunnen toevoegen, wijzigen en verwijderen. Stud
 | Opdracht08.3.IngredientenCrud  |IngredientWindow is aangepast: Ingredienten kunnen toegevoegd, gewijzigd en verwijderd worden|
 
 
-### Opdracht 9: Userstory MenuIngredienten
+### Opdracht 9: UserstoryDisplayWindow
+In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. Het model en ERD worden gemaakt, waarna de database wordt aangepast
+Tenslotte wordt het DisplayWindow aangepast, zodat de beschrijving en prijs van een maaltijd automatisch worden samengesteld
+
+|***Branch***||
+|:---|---|
+| Opdracht09.1.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
+| Opdracht09.2.WpfDisplayWindow     |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
+
+### Opdracht 10: Userstory MaaltijdIngredienten
 In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. Het model wordt samen gemaakt, maar daarna gaan de studenten zelf de rest uitwerken
 
 |***Branch***||
 |:---|---|
-| Opdracht09.1.UseCase              |Bevat de bijgewerkte use case|
-| Opdracht09.2.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
-| Opdracht09.2.WpfDatabase          |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
-| Opdracht09.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
+| Opdracht10.1.UseCase              |Bevat de bijgewerkte use case|
+| Opdracht10.2.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
+| Opdracht10.2.WpfDatabase          |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
+| Opdracht10.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
+
+### Opdracht 11: Optimalisatie
+In deze opdracht wordt de databaseclass geoptimaliseerd
+
+|***Branch***||
+|:---|---|
+| Opdracht11.1.WpfDatabase          |Databaseclass geoptimaliseerd|
 
