@@ -126,7 +126,7 @@ In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. He
 
 |***Branch***||
 |:---|---|
-| Opdracht10.1.UseCase              |Bevat de bijgewerkte use case. Daarnaast is het beheerwindow voor meals toegevoegd (inclusief toevoegen en verwijderen van gekoppelde ingredienten)|
+| Opdracht10.1.MaaltijdIngredienten|Bevat de bijgewerkte use case. Daarnaast is het beheerwindow voor meals toegevoegd (inclusief toevoegen en verwijderen van gekoppelde ingredienten)|
 
 ### Opdracht 11: Optimalisatie
 In deze opdracht wordt de databaseclass geoptimaliseerd
