@@ -126,10 +126,7 @@ In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. He
 
 |***Branch***||
 |:---|---|
-| Opdracht10.1.UseCase              |Bevat de bijgewerkte use case|
-| Opdracht10.2.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
-| Opdracht10.2.WpfDatabase          |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
-| Opdracht10.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
+| Opdracht10.1.UseCase              |Bevat de bijgewerkte use case. Daarnaast is het beheerwindow voor meals toegevoegd (inclusief toevoegen en verwijderen van gekoppelde ingredienten)|
 
 ### Opdracht 11: Optimalisatie
 In deze opdracht wordt de databaseclass geoptimaliseerd
