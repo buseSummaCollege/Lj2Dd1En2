@@ -21,7 +21,7 @@
                         </DockPanel>
                         <DockPanel>
                             <TextBlock Text="Eenheid:" Margin="2"/>
-                            <TextBlock Text="{Binding Unit}" Margin="2"/>
+                            <TextBlock Text="{Binding Unit.Name}" Margin="2"/>
                         </DockPanel>
                     </StackPanel>
                 </DataTemplate>
