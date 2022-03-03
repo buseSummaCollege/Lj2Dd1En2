@@ -103,13 +103,23 @@ Doel van deze opdracht is te oefenen met relaties en met de SQL innerjoin. De ee
 | Opdracht07.2.WpfDatabase      |Bevat WPF applicatie met uitgewerkte database class: Unit toegevoegd, Ingredient aangepast|
 | Opdracht07.3.WpfIngredienten  |Bevat WPF applicatie met data gebind aan de XAML: aangepast|
 
-### Opdracht 8: Userstory MenuIngredienten
+### Opdracht 8: Userstory Ingredientenbeheren
+De manager moet ook ingredienten kunnen toevoegen, wijzigen en verwijderen. Student leert out parameter te gebruiken
+
+|***Branch***||
+|:---|---|
+| Opdracht08.1.UseCaseCrud       |Bevat de bijgewerkte use case|
+| Opdracht08.2.DatabaseCrud      |Databaseclass is uitgebreid: methods Create, GetById, Update en Delete zijn toegevoegd|
+| Opdracht08.3.IngredientenCrud  |IngredientWindow is aangepast: Ingredienten kunnen toegevoegd, gewijzigd en verwijderd worden|
+
+
+### Opdracht 9: Userstory MenuIngredienten
 In deze opdracht wordt eerst ingegaan op de m:n relaties en koppelentiteiten. Het model wordt samen gemaakt, maar daarna gaan de studenten zelf de rest uitwerken
 
 |***Branch***||
 |:---|---|
-| Opdracht08.1.UseCase              |Bevat de bijgewerkte use case|
-| Opdracht08.2.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
-| Opdracht08.2.WpfDatabase          |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
-| Opdracht08.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
+| Opdracht09.1.UseCase              |Bevat de bijgewerkte use case|
+| Opdracht09.2.Datamodel            |Bevat bijgewerkte Datamodel: MenuIngredienten is toegevoegd|
+| Opdracht09.2.WpfDatabase          |Databaseclass is uitgebreid: Model class MenuIngredient toegevoegd, extra methods om de ingredienten van een menu bij te selecteren|
+| Opdracht09.3.WpfMenuIngredienten  |Bevat beheerfunctie voor de menuingredienten|
 
