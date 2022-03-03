@@ -12,8 +12,11 @@ namespace Lj2Dd1En2.Models
 
     public class LosPollosHermanosDb
     {
+        #region Messages
         public static readonly string UNKNOWN = "Unknown";
         public static readonly string OK = "Ok";
+        public static readonly string NOTFOUND = "not found";
+        #endregion
 
         private readonly string connString = ConfigurationManager.ConnectionStrings["Lj2Dd1En2Conn"].ConnectionString;
 
@@ -105,10 +108,10 @@ namespace Lj2Dd1En2.Models
 
                     while (reader.Read())
                     {
-                        Ingredient ingredient = new ()
+                        Ingredient ingredient = new()
                         {
                             IngredientId = (int)reader["ingredientId"],
-                            Name = (string)reader["name"],  
+                            Name = (string)reader["name"],
                             Price = (decimal)reader["price"],
                             UnitId = (int)reader["unitId"],
                             Unit = new Unit()
@@ -125,6 +128,255 @@ namespace Lj2Dd1En2.Models
                 catch (Exception e)
                 {
                     Console.Error.WriteLine(nameof(GetIngredients));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+
+        // GetIngredient leest 1 rij in uit de databasetabel Ingredients. Wordt er een rij gevonden, dan
+        // worden de gegevens hiervan in de output parameter ingredient gezet. 
+        // Parameters:
+        // - ingredientId   : Id van het in te lezen ingredient
+        // - ingredient(o)  : null = niet gevonden
+        //                    anders nieuw ingredient object met de database gegevens
+        // De waarde van GetIngredient:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding, als er wel fouten waren 
+        public string GetIngredient(int ingredientId, out Ingredient? ingredient)
+        {
+            ingredient = null;
+            string methodResult = UNKNOWN;
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                SELECT i.ingredientId, i.name, i.price, i.unitId, u.name as unitName
+                FROM ingredients i
+                INNER JOIN units u ON u.unitId = i.unitId
+                WHERE i.ingredientId = @ingredientId;
+                ";
+                    sql.Parameters.AddWithValue("@ingredientId", ingredientId);
+                    MySqlDataReader reader = sql.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ingredient = new()
+                        {
+                            IngredientId = (int)reader["ingredientId"],
+                            Name = (string)reader["name"],
+                            Price = (decimal)reader["price"],
+                            UnitId = (int)reader["unitId"],
+                            Unit = new Unit()
+                            {
+                                UnitId = (int)reader["unitId"],
+                                Name = (string)reader["unitName"],
+
+                            }
+                        };
+                    }
+
+                    methodResult = ingredient == null ? NOTFOUND : OK;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(GetIngredient));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+
+        // CreateIngredient voegt het ingredient object uit de parameter toe aan de database. 
+        // Het ingredient object moet aan alle database eisen voldoen. De waarde van CreateIngredient:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding (de melding geeft aan wat er fout was)
+        public string CreateIngredient(Ingredient ingredient)
+        {
+            if (ingredient == null || string.IsNullOrEmpty(ingredient.Name)
+                || ingredient.Price < 0 || ingredient.UnitId == 0)
+            {
+                throw new ArgumentException("Ongeldig argument bij gebruik van CreateIngredient");
+            }
+
+            string methodResult = UNKNOWN;
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                    INSERT INTO ingredients 
+                            (ingredientId,  name,  price,  unitId) 
+                    VALUES  (NULL,         @name, @price, @unitId);
+                    ";
+                    sql.Parameters.AddWithValue("@name", ingredient.Name);
+                    sql.Parameters.AddWithValue("@price", ingredient.Price);
+                    sql.Parameters.AddWithValue("@unitId", ingredient.UnitId);
+
+                    if (sql.ExecuteNonQuery() == 1)
+                    {
+                        methodResult = OK;
+                    }
+                    else
+                    {
+                        methodResult = $"Ingrediënt {ingredient.Name} kon niet toegevoegd worden.";
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(CreateIngredient));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+
+        // UpdateIngredient wijzigt het ingredient met id ingredientId (parameter) met de gegevens uit
+        // de parameter ingredient. De gegevens van ingredient moeten aan alle database eisen voldoen.
+        // De waarde van UpdateIngredient:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding (de melding geeft aan wat er fout was)
+        public string UpdateIngredient(int ingredientId, Ingredient ingredient)
+        {
+            if (ingredient == null || string.IsNullOrEmpty(ingredient.Name)
+                || ingredient.Price < 0 || ingredient.UnitId == 0)
+            {
+                throw new ArgumentException("Ongeldig argument bij gebruik van UpdateIngredient");
+            }
+
+            string methodResult = UNKNOWN;
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                        UPDATE ingredients
+                        SET name = @name, 
+                            price = @price,
+                            unitId = @unitId
+                        WHERE ingredientId = @ingredientId;
+                        ";
+                    sql.Parameters.AddWithValue("@ingredientId", ingredientId);
+                    sql.Parameters.AddWithValue("@name", ingredient.Name);
+                    sql.Parameters.AddWithValue("@price", ingredient.Price);
+                    sql.Parameters.AddWithValue("@unitId", ingredient.UnitId);
+
+                    if (sql.ExecuteNonQuery() == 1)
+                    {
+                        methodResult = OK;
+                    }
+                    else
+                    {
+                        methodResult = $"Ingredient {ingredient.Name} kon niet gewijzigd worden.";
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(UpdateIngredient));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+
+        // DeleteIngredient verwijdert het ingredient met de id ingredientId uit de database. De waarde
+        // van DeleteIngredient :
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding (de melding geeft aan wat er fout was)
+        public string DeleteIngredient(int ingredientId)
+        {
+            string methodResult = UNKNOWN;
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                        DELETE 
+                        FROM ingredients 
+                        WHERE ingredientId = @ingredientId 
+                    ";
+                    sql.Parameters.AddWithValue("@ingredientId", ingredientId);
+                    if (sql.ExecuteNonQuery() == 1)
+                    {
+                        methodResult = OK;
+                    }
+                    else
+                    {
+                        methodResult = $"Ingredient met id {ingredientId} kon niet verwijderd worden.";
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(DeleteIngredient));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+        #endregion
+
+        #region Unit
+        // GetUnits leest alle rijen in uit de databasetabel Units en voegt deze toe aan een ICollection. 
+        // Als de ICollection bij aanroep null is, volgt er een ArgumentException
+        // De waarde van GetUnits:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding, als er wel fouten waten (mogelijk zijn niet alle maaltijden ingelezen)
+        public string GetUnits(ICollection<Unit> units)
+        {
+            if (units == null)
+            {
+                throw new ArgumentException("Ongeldig argument bij gebruik van GetUnits");
+            }
+
+            string methodResult = UNKNOWN;
+
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                        SELECT u.unitId, u.name
+                        FROM units u
+                        ORDER BY u.name
+                    ";
+                    MySqlDataReader reader = sql.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Unit unit = new()
+                        {
+                            UnitId = (int)reader["unitId"],
+                            Name = (string)reader["name"],
+                        };
+                        units.Add(unit);
+                    }
+                    methodResult = OK;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(GetUnits));
                     Console.Error.WriteLine(e.Message);
                     methodResult = e.Message;
                 }
