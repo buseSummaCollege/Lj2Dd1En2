@@ -96,8 +96,9 @@ namespace Lj2Dd1En2.Models
                     conn.Open();
                     MySqlCommand sql = conn.CreateCommand();
                     sql.CommandText = @"
-                        SELECT i.ingredientId, i.name, i.price, i.unit
+                        SELECT i.ingredientId, i.name, i.price, i.unitId, u.name as unitName
                         FROM ingredients i
+                        INNER JOIN units u ON u.unitId = i.unitId
                         ORDER BY i.name
                     ";
                     MySqlDataReader reader = sql.ExecuteReader();
@@ -109,13 +110,17 @@ namespace Lj2Dd1En2.Models
                             IngredientId = (int)reader["ingredientId"],
                             Name = (string)reader["name"],  
                             Price = (decimal)reader["price"],
-                            Unit = (string)reader["unit"]
-                        };
+                            UnitId = (int)reader["unitId"],
+                            Unit = new Unit()
+                            {
+                                UnitId = (int)reader["unitId"],
+                                Name = (string)reader["unitName"],
 
+                            }
+                        };
                         ingredients.Add(ingredient);
                     }
                     methodResult = OK;
-
                 }
                 catch (Exception e)
                 {
@@ -127,5 +132,6 @@ namespace Lj2Dd1En2.Models
             return methodResult;
         }
         #endregion
+
     }
 }

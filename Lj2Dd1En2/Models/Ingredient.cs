@@ -32,12 +32,14 @@ namespace Lj2Dd1En2.Models
             set { price = value; }
         }
 
-        private string? unit;
+        private int unitId;
 
-        public string? Unit
+        public int UnitId
         {
-            get { return unit; }
-            set { unit = value; }
+            get { return unitId; }
+            set { unitId = value; }
         }
+
+        public Unit? Unit { get; set; }
     }
 }
