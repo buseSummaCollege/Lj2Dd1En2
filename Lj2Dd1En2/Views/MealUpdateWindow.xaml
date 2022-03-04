@@ -1,0 +1,25 @@
+﻿<Window x:Class="Lj2Dd1En2.Views.MealUpdateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lj2Dd1En2.Views"
+        mc:Ignorable="d"
+        Title="MealUpdateWindow" Height="450" Width="800">
+    <Grid DataContext="{Binding ExistingMeal}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Naam:"/>
+        <TextBox   Grid.Column="1" Grid.Row="0" Text="{Binding Name}"/>
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <Button Content="Save" Click="BtnSave_Click" IsDefault="True" Width="50" Margin="5"/>
+            <Button Content="Cancel" IsCancel="True" Width="50" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Window>

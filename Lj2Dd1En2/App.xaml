@@ -14,6 +14,8 @@
         <Style TargetType="local:KeuzeWindow" BasedOn="{StaticResource {x:Type Window}}"/>
         <Style TargetType="local:IngredientWindow" BasedOn="{StaticResource {x:Type Window}}"/>
         <Style TargetType="local:MealWindow" BasedOn="{StaticResource {x:Type Window}}"/>
+        <Style TargetType="local:MealCreateWindow" BasedOn="{StaticResource {x:Type Window}}"/>
+        <Style TargetType="local:MealUpdateWindow" BasedOn="{StaticResource {x:Type Window}}"/>
         <!--#endregion-->
 
 
@@ -31,7 +33,7 @@
         <Style TargetType="Button">
             <Style.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="05"/>
+                    <Setter Property="CornerRadius" Value="5"/>
                 </Style>
             </Style.Resources>
         </Style>

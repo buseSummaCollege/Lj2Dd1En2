@@ -191,7 +191,40 @@ namespace Lj2Dd1En2.Views
             }
             else
             {
-                MessageBox.Show(result);
+                MessageBox.Show(result + serviceDeskBericht);
+            }
+        }
+
+        private void BtnMealCreate_Click(object sender, RoutedEventArgs e)
+        {
+            if (new MealCreateWindow().ShowDialog() == true)
+            {
+                PopulateMeals();
+            }
+        }
+
+        private void BtnMealEdit_Click(object sender, RoutedEventArgs e)
+        {
+            Button bt = (Button)sender;
+            Meal meal = (Meal)bt.DataContext;
+            if (new MealUpdateWindow(meal.MealId).ShowDialog() == true)
+            {
+                PopulateMeals();
+            }
+        }
+
+        private void BtnMealDelete_Click(object sender, RoutedEventArgs e)
+        {
+            Button bt = (Button)sender; 
+            Meal meal = (Meal)bt.DataContext;
+            string result = db.DeleteMeal(meal.MealId);
+            if (result == LosPollosHermanosDb.OK)
+            {
+                PopulateMeals();
+            }
+            else
+            {
+                MessageBox.Show(result + serviceDeskBericht);
             }
         }
 

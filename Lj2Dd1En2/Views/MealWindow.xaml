@@ -7,13 +7,13 @@
         mc:Ignorable="d"
 
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" 
-        Title="Maaltijden - Beheer" Height="450" Width="930">
+        Title="Maaltijden - Beheer" Height="450" Width="1010">
 
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="295"/>
+            <ColumnDefinition Width="320"/>
             <ColumnDefinition Width="305"/>
-            <ColumnDefinition Width="290"/>
+            <ColumnDefinition Width="320"/>
         </Grid.ColumnDefinitions>
 
         <ListView Grid.Column="0" 
@@ -21,13 +21,28 @@
                   d:ItemsSource="{d:SampleData ItemCount=15}" >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Width="260" Orientation="Vertical" >
-                        <DockPanel Width="200"  Margin="5, 5, 5, 2" >
-                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="0, 0, 5, 0"/>
-                            <TextBlock Text="{Binding Price, StringFormat='€ 0.00'}" />
-                        </DockPanel>
-                        <TextBlock Text="{Binding Description}" Width="200"  Margin="5, 4, 5, 5" TextWrapping="Wrap"/>
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1">
+                            <Button Click="BtnMealEdit_Click" Width="30">
+                                <Image Source="/assets/edit.png"/>
+                            </Button>
+                            <Button Click="BtnMealDelete_Click" Width="30">
+                                <Image Source="/assets/del.png"/>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Width="260" Orientation="Vertical" >
+                            <DockPanel Width="200"  Margin="5, 5, 5, 2" >
+                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="0, 0, 5, 0"/>
+                                <TextBlock Text="{Binding Price, StringFormat='€ 0.00'}" />
+                            </DockPanel>
+                            <TextBlock Text="{Binding Description}" Width="200"  Margin="5, 4, 5, 5" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -92,5 +107,10 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <Button Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5" 
+                Click="BtnMealCreate_Click">
+            <Image Source="/assets/add.png" Width="30"/>
+        </Button>
     </Grid>
 </Window>
