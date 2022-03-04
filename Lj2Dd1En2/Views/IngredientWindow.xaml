@@ -14,7 +14,8 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <ListView Grid.Column="0" ItemsSource="{Binding Ingredients}" SelectedItem="{Binding SelectedIngredient}" >
+        <ListView Grid.Column="0" ItemsSource="{Binding Ingredients}" SelectedItem="{Binding SelectedIngredient}" 
+                  d:ItemsSource="{d:SampleData ItemCount=15}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Width="300">

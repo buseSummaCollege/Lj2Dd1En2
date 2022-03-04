@@ -13,6 +13,7 @@
         <Style TargetType="local:DisplayWindow" BasedOn="{StaticResource {x:Type Window}}"/>
         <Style TargetType="local:KeuzeWindow" BasedOn="{StaticResource {x:Type Window}}"/>
         <Style TargetType="local:IngredientWindow" BasedOn="{StaticResource {x:Type Window}}"/>
+        <Style TargetType="local:MealWindow" BasedOn="{StaticResource {x:Type Window}}"/>
         <!--#endregion-->
 
 

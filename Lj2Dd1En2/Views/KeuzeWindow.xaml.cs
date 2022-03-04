@@ -30,6 +30,12 @@ namespace Lj2Dd1En2.Views
             this.Close();
         }
 
+        private void BtnMaaltijdenWindow_Click(object sender, RoutedEventArgs e)
+        {
+            new MealWindow().Show();
+            this.Close();
+        }
+
         private void BtnIngredientenWindow_Click(object sender, RoutedEventArgs e)
         {
             new IngredientWindow().Show();

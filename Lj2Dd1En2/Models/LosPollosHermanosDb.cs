@@ -410,7 +410,7 @@ namespace Lj2Dd1En2.Models
                                    i.name, i.price, i.unitId, 
                                    u.name as 'UnitName'
                             FROM mealingredients mi
-                            INNER JOIN ingredients i ON i.ingredientId = mi.mealIngredientId
+                            INNER JOIN ingredients i ON i.ingredientId = mi.ingredientId
                             INNER JOIN units u ON u.unitId = i.unitId
                             WHERE mi.mealId = @mealId
                         ";
@@ -452,7 +452,96 @@ namespace Lj2Dd1En2.Models
             }
             return methodResult;
         }
-        #endregion
 
+        // CreateMealIngredient voegt het mealingredient object uit de parameter toe aan de database. 
+        // Het mealingredient object moet aan alle database eisen voldoen. De waarde van CreateMealIngredient:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding (de melding geeft aan wat er fout was)
+        public string CreateMealIngredient(MealIngredient mealIngredient)
+        {
+            if (mealIngredient == null 
+                || mealIngredient.Quantity == 0 
+                || mealIngredient.MealId == 0 
+                || mealIngredient.IngredientId == 0)
+            {
+                throw new ArgumentException("Ongeldig argument bij gebruik van CreateMealIngredient");
+            }
+
+            string methodResult = UNKNOWN;
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                        INSERT INTO mealingredients
+		                        (mealIngredientId,  mealId,  ingredientId,  quantity) 
+                        VALUES  (NULL,             @mealId, @ingredientId, @quantity) 
+                    ";
+                    sql.Parameters.AddWithValue("@mealId", mealIngredient.MealId);
+                    sql.Parameters.AddWithValue("@ingredientId", mealIngredient.IngredientId);
+                    sql.Parameters.AddWithValue("@quantity", mealIngredient.Quantity);
+
+                    if (sql.ExecuteNonQuery() == 1)
+                    {
+                        methodResult = OK;
+                    }
+                    else
+                    {
+                        methodResult = $"Ingrediënt {mealIngredient.IngredientId} kon niet toegevoegd " +
+                            $"worden aan maaltijd {mealIngredient.MealId}.";
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(CreateMealIngredient));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+
+        // DeleteMealIngredient verwijdert het mealingredient met de id mealingredientId uit de database. De waarde
+        // van DeleteMealIngredient :
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding (de melding geeft aan wat er fout was)
+        public string DeleteMealIngredient(int mealIngredientId)
+        {
+            string methodResult = UNKNOWN;
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = @"
+                        DELETE FROM mealingredients
+                        WHERE mealIngredientId = @mealIngredientId
+                    ";
+                    sql.Parameters.AddWithValue("@mealIngredientId", mealIngredientId);
+                    if (sql.ExecuteNonQuery() == 1)
+                    {
+                        methodResult = OK;
+                    }
+                    else
+                    {
+                        methodResult = $"Maaltijdingredient met id {mealIngredientId} kon niet verwijderd worden.";
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(DeleteMealIngredient));
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult;
+        }
+        #endregion
     }
 }
