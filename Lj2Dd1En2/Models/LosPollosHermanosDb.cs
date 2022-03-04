@@ -16,9 +16,152 @@ namespace Lj2Dd1En2.Models
         public static readonly string UNKNOWN = "Unknown";
         public static readonly string OK = "Ok";
         public static readonly string NOTFOUND = "not found";
+        private static readonly string ILLEGALARGUMENT = "Ongeldig argument";
+        private static readonly string UPDATERROR = "fout bij bijwerken van database rijen";
         #endregion
 
         private readonly string connString = ConfigurationManager.ConnectionStrings["Lj2Dd1En2Conn"].ConnectionString;
+
+        #region General Purpose SQL Methods
+        // Call back method om een Reader-row in een nieuw object van de class T te zetten:
+        private delegate T EntityToClass<T>(MySqlDataReader reader);
+
+        // Method ReadObjects verwerkt een SQL SELECT statement en zorgt ervoor dat alle gelezen
+        // rijen in een ICollection worden gezet.
+        // De method kent de volgende parameters 
+        // - objectList   : objectList: Een Typed ICollection. Het type is een Generic
+        // - sqlCommand   : het SQL statement dat gebruikt moet worden
+        // - sqlParameters: (optioneel)
+        // - entityToClass: call back functie om de database rij naar een class object om te zetten
+        //
+        // Er zijn 2 overloads: 1 met SQL-parameters en 1 zonder SQL-parameters
+        private string ReadObjects<T>(ICollection<T> objectList, string sqlCommand, EntityToClass<T> entityToClass)
+        {
+            return ReadObjects(objectList, sqlCommand, null, entityToClass);
+        }
+        private string ReadObjects<T>(ICollection<T> objectList, string sqlCommand,
+            MySqlParameter[]? sqlParameters, EntityToClass<T> entityToClass)
+        {
+            if (objectList == null)
+            {
+                throw new ArgumentException(ILLEGALARGUMENT);
+            }
+            string methodResult = "";
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = sqlCommand;
+                    if (sqlParameters != null)
+                    {
+                        sql.Parameters.AddRange(sqlParameters);
+                    }
+                    MySqlDataReader reader = sql.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        objectList.Add(entityToClass(reader));
+                    }
+                    methodResult = OK;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(ReadObjects));
+                    Console.Error.WriteLine(sqlCommand);
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult != "" ? methodResult : OK;
+        }
+
+        // Method ReadObject verwerkt een SQL SELECT statement en zorgt ervoor dat de eerste gelezen
+        // rij in een nieuw T object wordt gezet.
+        // De method kent de volgende parameters 
+        // - t            : object van het type T. Het type is een Generic
+        // - sqlCommand   : het SQL statement dat gebruikt moet worden
+        // - sqlParameters: (optioneel)
+        // - entityToClass: call back functie om de database rij naar een class object om te zetten
+        //
+        // Er zijn geen overloads: om ervoor te zorgen dat de method ook zonder SQL-parameters
+        // gebruikt kan worden, is hier voor de SQL-parameters een default waarde null gebruikt
+        private string ReadObject<T>(string sqlCommand, out T t, EntityToClass<T> entityToClass,
+            MySqlParameter[]? sqlParameters = null)
+        {
+            string methodResult = "";
+            t = default(T);             // Instantieer t op null; null mag niet
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = sqlCommand;
+                    if (sqlParameters != null)
+                    {
+                        sql.Parameters.AddRange(sqlParameters);
+                    }
+                    MySqlDataReader reader = sql.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        t = entityToClass(reader);
+                    }
+                    methodResult = OK;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(ReadObjects));
+                    Console.Error.WriteLine(sqlCommand);
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult != "" ? methodResult : OK;
+        }
+
+        // Method CreateUpdateOrDeleteObject verwerkt een UPDATE of DELETE statement. Veiligheidhalve is het 
+        // verplicht om SQL parameters mee te geven die in de WHERE conditie gebruikt worden.
+        // De method kent de volgende parameters 
+        // - sqlCommand   : het SQL statement dat gebruikt moet worden
+        // - sqlParameters: (optioneel)
+        private string CreateUpdateOrDeleteObject(string sqlCommand, MySqlParameter[]? sqlParameters = null)
+        {
+            string methodResult = "";
+
+            using (MySqlConnection conn = new(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand sql = conn.CreateCommand();
+                    sql.CommandText = sqlCommand;
+                    sql.Parameters.AddRange(sqlParameters);
+
+                    if (sql.ExecuteNonQuery() == 1)
+                    {
+                        methodResult = OK;
+                    }
+                    else
+                    {
+                        methodResult = UPDATERROR;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(nameof(ReadObjects));
+                    Console.Error.WriteLine(sqlCommand);
+                    Console.Error.WriteLine(e.Message);
+                    methodResult = e.Message;
+                }
+            }
+            return methodResult != "" ? methodResult : OK;
+        }
+        #endregion
 
         #region Meals
         // GetMeals leest alle rijen in uit de databasetabel Meals en voegt deze toe aan een ICollection. 
@@ -28,49 +171,107 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding, als er wel fouten waten (mogelijk zijn niet alle maaltijden ingelezen)
         public string GetMeals(ICollection<Meal> meals)
         {
-            if (meals == null)
-            {
-                throw new ArgumentException("Ongeldig argument bij gebruik van GetMeals");
-            }
+            string sqlCommand = @"
+                SELECT m.mealId, m.name
+                FROM meals m
+                ";
 
-            string methodResult = UNKNOWN;
-
-
-            using (MySqlConnection conn = new(connString))
-            {
-                try
+            return ReadObjects<Meal>(
+                meals,                          // De lijst met Meals
+                sqlCommand,                     // Het SQL Statement
+                reader =>                       // Conversie van database Entiteit naar een Object
                 {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                        SELECT m.mealId, m.name
-                        FROM meals m
-                        ";
-                    MySqlDataReader reader = sql.ExecuteReader();
-
-                    while (reader.Read())
+                    Meal meal = new()           
                     {
-                        Meal meal = new Meal()
-                        {
-                            MealId = (int)reader["mealId"],
-                            Name = (string)reader["name"],
-                        };
-                        meal.MealIngredients = new List<MealIngredient>();
-                        GetMealIngredientsByMeal(meal.MealId, meal.MealIngredients);
-
-                        meals.Add(meal);
-                    }
-                    methodResult = OK;
-
+                        MealId = (int)reader["mealId"],
+                        Name = (string)reader["name"],
+                    };
+                    meal.MealIngredients = new List<MealIngredient>();
+                    GetMealIngredientsByMeal(meal.MealId, meal.MealIngredients);
+                  
+                    return meal;
                 }
-                catch (Exception e)
+                );
+        }
+
+        // GetMeal leest 1 rij in uit de databasetabel Meals. De waarde van GetMeal:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding, als er wel fouten waren 
+        public string GetMeal(int mealId, out Meal meal)
+        {
+            string sqlCommand = @"
+                    SELECT m.mealId, m.name
+                    FROM meals m
+                    WHERE m.mealId = @mealId;
+                ";
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@mealId", mealId)
+                };
+
+            return ReadObject<Meal>(
+                sqlCommand, 
+                out meal,
+                reader =>
                 {
-                    Console.Error.WriteLine(nameof(GetMeals));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+                    Meal meal = new()
+                    {
+                        MealId = (int)reader["mealId"],
+                        Name = (string)reader["name"],
+                    };
+                    meal.MealIngredients = new List<MealIngredient>();
+                    GetMealIngredientsByMeal(meal.MealId, meal.MealIngredients);
+                    
+                    return meal;
+                },
+                sqlParameters);
+        }
+
+        // CreateMeal voegt een maaltijd object toe aan de database. Het maaltijd object is
+        // een parameter van de method. Deze moet aan alle database eisen voldoen.
+        // De waarde van CreateMeal:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding (de melding geeft aan wat er fout was)
+        public string CreateMeal(Meal meal)
+        {
+            string sqlCommand = @"
+                    INSERT INTO meals  (mealId,  name) 
+                    VALUES             (NULL,   @name) 
+                ";
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@name", meal.Name),
+                };
+            return CreateUpdateOrDeleteObject(sqlCommand, sqlParameters);
+        }
+
+        // UpdateMeal wijzigt in de database tabel Meals de maaltijd met de id mealId. De gegevens
+        // worden overgenomen uit het object meal. De parameter meal moet aan alle database eisen
+        // voldoen.
+        // De waarde van UpdateMeal:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding (de melding geeft aan wat er fout was)
+        public string UpdateMeal(int mealId, Meal meal)
+        {
+            string sqlCommand = @"
+                        UPDATE meals 
+                        SET name = @name
+                        WHERE mealId = @mealId;
+                ";
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@mealId", mealId),
+                new MySqlParameter("@name", meal.Name),
+                };
+
+            return CreateUpdateOrDeleteObject(sqlCommand, sqlParameters);
+        }
+
+        // DeleteMeal verwijdert de maaltijd met id mealId uit de database. De waarde van DeleteMeal:
+        // - "ok" als er geen fouten waren. 
+        // - een foutmelding (de melding geeft aan wat er fout was)
+        public string DeleteMeal(int mealId)
+        {
+            string sqlCommand = @"DELETE FROM meals WHERE mealId = @mealId";
+            MySqlParameter[] sqlParameters = { new MySqlParameter("@mealId", mealId) };
+            return CreateUpdateOrDeleteObject(sqlCommand, sqlParameters);
         }
         #endregion
 
@@ -82,55 +283,28 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding, als er wel fouten waten (mogelijk zijn niet alle maaltijden ingelezen)
         public string GetIngredients(ICollection<Ingredient> ingredients)
         {
-            if (ingredients == null)
-            {
-                throw new ArgumentException("Ongeldig argument bij gebruik van GetIngredients");
-            }
-
-            string methodResult = UNKNOWN;
-
-
-            using (MySqlConnection conn = new(connString))
-            {
-                try
-                {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                        SELECT i.ingredientId, i.name, i.price, i.unitId, u.name as unitName
-                        FROM ingredients i
-                        INNER JOIN units u ON u.unitId = i.unitId
-                        ORDER BY i.name
+            string sqlCommand = @"
+                    SELECT i.ingredientId, i.name, i.price, i.unitId, u.name as unitName
+                    FROM ingredients i
+                    INNER JOIN units u ON u.unitId = i.unitId
+                    ORDER BY i.name
                     ";
-                    MySqlDataReader reader = sql.ExecuteReader();
 
-                    while (reader.Read())
-                    {
-                        Ingredient ingredient = new()
-                        {
-                            IngredientId = (int)reader["ingredientId"],
-                            Name = (string)reader["name"],
-                            Price = (decimal)reader["price"],
-                            UnitId = (int)reader["unitId"],
-                            Unit = new Unit()
-                            {
-                                UnitId = (int)reader["unitId"],
-                                Name = (string)reader["unitName"],
-
-                            }
-                        };
-                        ingredients.Add(ingredient);
-                    }
-                    methodResult = OK;
-                }
-                catch (Exception e)
+            return ReadObjects<Ingredient>(ingredients, sqlCommand,
+                reader => new ()
                 {
-                    Console.Error.WriteLine(nameof(GetIngredients));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
+                    IngredientId = (int)reader["ingredientId"],
+                    Name = (string)reader["name"],
+                    Price = (decimal)reader["price"],
+                    UnitId = (int)reader["unitId"],
+                    Unit = new Unit()
+                    {
+                        UnitId = (int)reader["unitId"],
+                        Name = (string)reader["unitName"],
+
+                    }
                 }
-            }
-            return methodResult;
+                );
         }
 
         // GetIngredient leest 1 rij in uit de databasetabel Ingredients. Wordt er een rij gevonden, dan
@@ -144,51 +318,33 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding, als er wel fouten waren 
         public string GetIngredient(int ingredientId, out Ingredient? ingredient)
         {
-            ingredient = null;
-            string methodResult = UNKNOWN;
-
-            using (MySqlConnection conn = new(connString))
-            {
-                try
-                {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
+            string sqlCommand = @"
                 SELECT i.ingredientId, i.name, i.price, i.unitId, u.name as unitName
                 FROM ingredients i
                 INNER JOIN units u ON u.unitId = i.unitId
                 WHERE i.ingredientId = @ingredientId;
                 ";
-                    sql.Parameters.AddWithValue("@ingredientId", ingredientId);
-                    MySqlDataReader reader = sql.ExecuteReader();
 
-                    while (reader.Read())
-                    {
-                        ingredient = new()
-                        {
-                            IngredientId = (int)reader["ingredientId"],
-                            Name = (string)reader["name"],
-                            Price = (decimal)reader["price"],
-                            UnitId = (int)reader["unitId"],
-                            Unit = new Unit()
-                            {
-                                UnitId = (int)reader["unitId"],
-                                Name = (string)reader["unitName"],
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@ingredientId", ingredientId)
+                };
 
-                            }
-                        };
-                    }
-
-                    methodResult = ingredient == null ? NOTFOUND : OK;
-                }
-                catch (Exception e)
+            return ReadObject<Ingredient>(sqlCommand, out ingredient,
+                reader => new()
                 {
-                    Console.Error.WriteLine(nameof(GetIngredient));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+                    IngredientId = (int)reader["ingredientId"],
+                    Name = (string)reader["name"],
+                    Price = (decimal)reader["price"],
+                    UnitId = (int)reader["unitId"],
+                    Unit = new Unit()
+                    {
+                        UnitId = (int)reader["unitId"],
+                        Name = (string)reader["unitName"],
+
+                    }
+                },
+                sqlParameters
+                );
         }
 
         // CreateIngredient voegt het ingredient object uit de parameter toe aan de database. 
@@ -197,46 +353,18 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding (de melding geeft aan wat er fout was)
         public string CreateIngredient(Ingredient ingredient)
         {
-            if (ingredient == null || string.IsNullOrEmpty(ingredient.Name)
-                || ingredient.Price < 0 || ingredient.UnitId == 0)
-            {
-                throw new ArgumentException("Ongeldig argument bij gebruik van CreateIngredient");
-            }
+            string sqlCommand = @"
+                INSERT INTO ingredients 
+                        (ingredientId,  name,  price,  unitId) 
+                VALUES  (NULL,         @name, @price, @unitId);
+                ";
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@name", ingredient.Name),
+                new MySqlParameter("@price", ingredient.Price),
+                new MySqlParameter("@unitId", ingredient.UnitId),
+                };
 
-            string methodResult = UNKNOWN;
-
-            using (MySqlConnection conn = new(connString))
-            {
-                try
-                {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                    INSERT INTO ingredients 
-                            (ingredientId,  name,  price,  unitId) 
-                    VALUES  (NULL,         @name, @price, @unitId);
-                    ";
-                    sql.Parameters.AddWithValue("@name", ingredient.Name);
-                    sql.Parameters.AddWithValue("@price", ingredient.Price);
-                    sql.Parameters.AddWithValue("@unitId", ingredient.UnitId);
-
-                    if (sql.ExecuteNonQuery() == 1)
-                    {
-                        methodResult = OK;
-                    }
-                    else
-                    {
-                        methodResult = $"Ingrediënt {ingredient.Name} kon niet toegevoegd worden.";
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(nameof(CreateIngredient));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+            return CreateUpdateOrDeleteObject(sqlCommand, sqlParameters);
         }
 
         // UpdateIngredient wijzigt het ingredient met id ingredientId (parameter) met de gegevens uit
@@ -246,49 +374,21 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding (de melding geeft aan wat er fout was)
         public string UpdateIngredient(int ingredientId, Ingredient ingredient)
         {
-            if (ingredient == null || string.IsNullOrEmpty(ingredient.Name)
-                || ingredient.Price < 0 || ingredient.UnitId == 0)
-            {
-                throw new ArgumentException("Ongeldig argument bij gebruik van UpdateIngredient");
-            }
+            string sqlCommand = @"
+                UPDATE ingredients
+                SET name = @name, 
+                    price = @price,
+                    unitId = @unitId
+                WHERE ingredientId = @ingredientId;
+                ";
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@ingredientId", ingredientId),
+                new MySqlParameter("@name", ingredient.Name),
+                new MySqlParameter("@price", ingredient.Price),
+                new MySqlParameter("@unitId", ingredient.UnitId),
+                };
 
-            string methodResult = UNKNOWN;
-
-            using (MySqlConnection conn = new(connString))
-            {
-                try
-                {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                        UPDATE ingredients
-                        SET name = @name, 
-                            price = @price,
-                            unitId = @unitId
-                        WHERE ingredientId = @ingredientId;
-                        ";
-                    sql.Parameters.AddWithValue("@ingredientId", ingredientId);
-                    sql.Parameters.AddWithValue("@name", ingredient.Name);
-                    sql.Parameters.AddWithValue("@price", ingredient.Price);
-                    sql.Parameters.AddWithValue("@unitId", ingredient.UnitId);
-
-                    if (sql.ExecuteNonQuery() == 1)
-                    {
-                        methodResult = OK;
-                    }
-                    else
-                    {
-                        methodResult = $"Ingredient {ingredient.Name} kon niet gewijzigd worden.";
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(nameof(UpdateIngredient));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+            return CreateUpdateOrDeleteObject(sqlCommand, sqlParameters);
         }
 
         // DeleteIngredient verwijdert het ingredient met de id ingredientId uit de database. De waarde
@@ -297,38 +397,12 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding (de melding geeft aan wat er fout was)
         public string DeleteIngredient(int ingredientId)
         {
-            string methodResult = UNKNOWN;
+            string sqlCommand = "DELETE FROM ingredients WHERE ingredientId = @ingredientId";
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@ingredientId", ingredientId),
+                };
 
-            using (MySqlConnection conn = new(connString))
-            {
-                try
-                {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                        DELETE 
-                        FROM ingredients 
-                        WHERE ingredientId = @ingredientId 
-                    ";
-                    sql.Parameters.AddWithValue("@ingredientId", ingredientId);
-                    if (sql.ExecuteNonQuery() == 1)
-                    {
-                        methodResult = OK;
-                    }
-                    else
-                    {
-                        methodResult = $"Ingredient met id {ingredientId} kon niet verwijderd worden.";
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(nameof(DeleteIngredient));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+            return CreateUpdateOrDeleteObject(sqlCommand, sqlParameters);
         }
         #endregion
 
@@ -340,46 +414,18 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding, als er wel fouten waten (mogelijk zijn niet alle maaltijden ingelezen)
         public string GetUnits(ICollection<Unit> units)
         {
-            if (units == null)
-            {
-                throw new ArgumentException("Ongeldig argument bij gebruik van GetUnits");
-            }
+            string sqlCommand = @"
+                SELECT u.unitId, u.name
+                FROM units u
+                ORDER BY u.name
+                ";
 
-            string methodResult = UNKNOWN;
-
-
-            using (MySqlConnection conn = new(connString))
-            {
-                try
+            return ReadObjects(units, sqlCommand,
+                reader => new Unit()
                 {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                        SELECT u.unitId, u.name
-                        FROM units u
-                        ORDER BY u.name
-                    ";
-                    MySqlDataReader reader = sql.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Unit unit = new()
-                        {
-                            UnitId = (int)reader["unitId"],
-                            Name = (string)reader["name"],
-                        };
-                        units.Add(unit);
-                    }
-                    methodResult = OK;
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(nameof(GetUnits));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+                    UnitId = (int)reader["unitId"],
+                    Name = (string)reader["name"],
+                });
         }
         #endregion
 
@@ -391,66 +437,40 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding, als er wel fouten waten (mogelijk zijn niet alle maaltijden ingelezen)
         public string GetMealIngredientsByMeal(int mealId, ICollection<MealIngredient> mealIngredients)
         {
-            if (mealIngredients == null)
-            {
-                throw new ArgumentException("Ongeldig argument bij gebruik van GetMealIngredientsByMeal");
-            }
+            string sqlCommand = @"
+                SELECT mi.mealIngredientId, mi.mealId, mi.ingredientId, mi.quantity, 
+                        i.name, i.price, i.unitId, 
+                        u.name as 'UnitName'
+                FROM mealingredients mi
+                INNER JOIN ingredients i ON i.ingredientId = mi.ingredientId
+                INNER JOIN units u ON u.unitId = i.unitId
+                WHERE mi.mealId = @mealId
+                ";
 
-            string methodResult = UNKNOWN;
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@mealId", mealId),
+                };
 
-
-            using (MySqlConnection conn = new(connString))
-            {
-                try
+            return ReadObjects<MealIngredient>(mealIngredients, sqlCommand, sqlParameters,
+                reader => new MealIngredient()
                 {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                            SELECT mi.mealIngredientId, mi.mealId, mi.ingredientId, mi.quantity, 
-                                   i.name, i.price, i.unitId, 
-                                   u.name as 'UnitName'
-                            FROM mealingredients mi
-                            INNER JOIN ingredients i ON i.ingredientId = mi.ingredientId
-                            INNER JOIN units u ON u.unitId = i.unitId
-                            WHERE mi.mealId = @mealId
-                        ";
-                    sql.Parameters.AddWithValue("@mealId", mealId);
-                    MySqlDataReader reader = sql.ExecuteReader();
-
-                    while (reader.Read())
+                    MealIngredientId = (int)reader["mealIngredientId"],
+                    MealId = (int)reader["mealId"],
+                    IngredientId = (int)reader["ingredientId"],
+                    Quantity = (uint)reader["quantity"],
+                    Ingredient = new()
                     {
-                        MealIngredient mealIngredient = new ()
+                        IngredientId = (int)reader["ingredientId"],
+                        Name = (string)reader["name"],
+                        Price = (decimal)reader["price"],
+                        UnitId = (int)reader["unitId"],
+                        Unit = new()
                         {
-                            MealIngredientId = (int)reader["mealIngredientId"],
-                            MealId = (int)reader["mealId"],
-                            IngredientId = (int)reader["ingredientId"],
-                            Quantity = (uint)reader["quantity"],
-                            Ingredient = new()
-                            {
-                                IngredientId = (int)reader["ingredientId"],
-                                Name = (string)reader["name"],  
-                                Price = (decimal)reader["price"],
-                                UnitId = (int)reader["unitId"],
-                                Unit = new()
-                                {
-                                    UnitId = (int)reader["unitId"],
-                                    Name = (string)reader["UnitName"]
-                                }
-                            }
-                        };
-                        mealIngredients.Add(mealIngredient);
+                            UnitId = (int)reader["unitId"],
+                            Name = (string)reader["UnitName"]
+                        }
                     }
-                    methodResult = OK;
-
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(nameof(GetMealIngredientsByMeal));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+                });
         }
 
         // CreateMealIngredient voegt het mealingredient object uit de parameter toe aan de database. 
@@ -459,49 +479,26 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding (de melding geeft aan wat er fout was)
         public string CreateMealIngredient(MealIngredient mealIngredient)
         {
-            if (mealIngredient == null 
-                || mealIngredient.Quantity == 0 
-                || mealIngredient.MealId == 0 
+            if (mealIngredient == null
+                || mealIngredient.Quantity == 0
+                || mealIngredient.MealId == 0
                 || mealIngredient.IngredientId == 0)
             {
                 throw new ArgumentException("Ongeldig argument bij gebruik van CreateMealIngredient");
             }
 
-            string methodResult = UNKNOWN;
+            string sqlCommand = @"
+                INSERT INTO mealingredients
+		                    (mealIngredientId,  mealId,  ingredientId,  quantity) 
+                    VALUES  (NULL,             @mealId, @ingredientId, @quantity) 
+                ";
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@mealId", mealIngredient.MealId),
+                new MySqlParameter("@ingredientId", mealIngredient.IngredientId),
+                new MySqlParameter("@quantity", mealIngredient.Quantity),
+                };
 
-            using (MySqlConnection conn = new(connString))
-            {
-                try
-                {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                        INSERT INTO mealingredients
-		                        (mealIngredientId,  mealId,  ingredientId,  quantity) 
-                        VALUES  (NULL,             @mealId, @ingredientId, @quantity) 
-                    ";
-                    sql.Parameters.AddWithValue("@mealId", mealIngredient.MealId);
-                    sql.Parameters.AddWithValue("@ingredientId", mealIngredient.IngredientId);
-                    sql.Parameters.AddWithValue("@quantity", mealIngredient.Quantity);
-
-                    if (sql.ExecuteNonQuery() == 1)
-                    {
-                        methodResult = OK;
-                    }
-                    else
-                    {
-                        methodResult = $"Ingrediënt {mealIngredient.IngredientId} kon niet toegevoegd " +
-                            $"worden aan maaltijd {mealIngredient.MealId}.";
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(nameof(CreateMealIngredient));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+            return CreateUpdateOrDeleteObject(sqlCommand, sqlParameters);
         }
 
         // DeleteMealIngredient verwijdert het mealingredient met de id mealingredientId uit de database. De waarde
@@ -510,37 +507,12 @@ namespace Lj2Dd1En2.Models
         // - een foutmelding (de melding geeft aan wat er fout was)
         public string DeleteMealIngredient(int mealIngredientId)
         {
-            string methodResult = UNKNOWN;
+            string sqlCommand = "DELETE FROM mealingredients WHERE mealIngredientId = @mealIngredientId";
+            MySqlParameter[] sqlParameters = {
+                new MySqlParameter("@mealIngredientId", mealIngredientId),
+                };
 
-            using (MySqlConnection conn = new(connString))
-            {
-                try
-                {
-                    conn.Open();
-                    MySqlCommand sql = conn.CreateCommand();
-                    sql.CommandText = @"
-                        DELETE FROM mealingredients
-                        WHERE mealIngredientId = @mealIngredientId
-                    ";
-                    sql.Parameters.AddWithValue("@mealIngredientId", mealIngredientId);
-                    if (sql.ExecuteNonQuery() == 1)
-                    {
-                        methodResult = OK;
-                    }
-                    else
-                    {
-                        methodResult = $"Maaltijdingredient met id {mealIngredientId} kon niet verwijderd worden.";
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(nameof(DeleteMealIngredient));
-                    Console.Error.WriteLine(e.Message);
-                    methodResult = e.Message;
-                }
-            }
-            return methodResult;
+            return CreateUpdateOrDeleteObject(sqlCommand, sqlParameters);
         }
         #endregion
     }
