@@ -410,7 +410,7 @@ namespace Lj2Dd1En2.Models
                                    i.name, i.price, i.unitId, 
                                    u.name as 'UnitName'
                             FROM mealingredients mi
-                            INNER JOIN ingredients i ON i.ingredientId = mi.mealIngredientId
+                            INNER JOIN ingredients i ON i.ingredientId = mi.ingredientId
                             INNER JOIN units u ON u.unitId = i.unitId
                             WHERE mi.mealId = @mealId
                         ";
