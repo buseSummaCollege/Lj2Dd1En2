@@ -40,9 +40,9 @@ namespace Lj2Dd1En2.Models
                     conn.Open();
                     MySqlCommand sql = conn.CreateCommand();
                     sql.CommandText = @"
-            SELECT m.mealId, m.name, m.description, m.price
-            FROM meals m
-            ";
+                        SELECT m.mealId, m.name, m.description, m.price
+                        FROM meals m
+                        ";
                     MySqlDataReader reader = sql.ExecuteReader();
 
                     while (reader.Read())
@@ -104,10 +104,10 @@ namespace Lj2Dd1En2.Models
 
                     while (reader.Read())
                     {
-                        Ingredient ingredient = new ()
+                        Ingredient ingredient = new()
                         {
                             IngredientId = (int)reader["ingredientId"],
-                            Name = (string)reader["name"],  
+                            Name = (string)reader["name"],
                             Price = (decimal)reader["price"],
                             Unit = (string)reader["unit"]
                         };
