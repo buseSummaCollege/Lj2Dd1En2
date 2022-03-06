@@ -47,7 +47,7 @@ namespace Lj2Dd1En2.Models
 
                     while (reader.Read())
                     {
-                        Meal meal = new Meal()
+                        Meal meal = new ()
                         {
                             MealId = (int)reader["mealId"],
                             Name = (string)reader["name"],
@@ -111,7 +111,7 @@ namespace Lj2Dd1En2.Models
                             Name = (string)reader["name"],  
                             Price = (decimal)reader["price"],
                             UnitId = (int)reader["unitId"],
-                            Unit = new Unit()
+                            Unit = new ()
                             {
                                 UnitId = (int)reader["unitId"],
                                 Name = (string)reader["unitName"],

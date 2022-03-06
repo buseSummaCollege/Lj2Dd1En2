@@ -16,9 +16,9 @@ namespace Lj2Dd1En2.Models
             set { unitId = value; }
         }
 
-        private string? name;
+        private string name = null!;
 
-        public string? Name
+        public string Name
         {
             get { return name; }
             set { name = value; }

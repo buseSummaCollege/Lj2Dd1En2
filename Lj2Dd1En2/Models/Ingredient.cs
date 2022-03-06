@@ -16,9 +16,9 @@ namespace Lj2Dd1En2.Models
             set { ingredientId = value; }
         }
 
-        private string? name;
+        private string name = null!;
 
-        public string? Name
+        public string Name
         {
             get { return name; }
             set { name = value; }
@@ -40,6 +40,6 @@ namespace Lj2Dd1En2.Models
             set { unitId = value; }
         }
 
-        public Unit? Unit { get; set; }
+        public Unit Unit { get; set; } = null!;
     }
 }
